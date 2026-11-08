@@ -5341,5 +5341,64 @@ window.vionMnre={open:function(){var b=document.querySelector('#tabToggle button
 })();
 
 </script>
+<style>
+/* ===== VION GLASS THEME (optional; body.vglass) ===== */
+body.vglass{--g-blur:blur(18px) saturate(160%);--g-bd:rgba(255,255,255,.72);--g-in:inset 0 1px 0 rgba(255,255,255,.85);--g-sh:0 14px 40px -18px rgba(20,40,110,.38)}
+body.vglass:not(.vdark){background:
+ radial-gradient(900px 520px at 8% -6%,rgba(79,110,255,.34),transparent 62%),
+ radial-gradient(800px 520px at 96% 4%,rgba(120,70,235,.24),transparent 60%),
+ radial-gradient(900px 640px at 80% 108%,rgba(0,184,148,.22),transparent 62%),
+ radial-gradient(700px 500px at 0% 100%,rgba(255,170,60,.18),transparent 60%),
+ linear-gradient(180deg,#EEF3FF,#F6F8FF) fixed !important}
+body.vglass header{background:linear-gradient(135deg,rgba(14,26,78,.74),rgba(34,70,190,.58) 62%,rgba(20,120,120,.5)) !important;-webkit-backdrop-filter:var(--g-blur);backdrop-filter:var(--g-blur);border:1px solid rgba(255,255,255,.34) !important;box-shadow:var(--g-in),0 22px 50px -22px rgba(20,40,120,.6) !important}
+body.vglass .wrap .panel,body.vglass .panel,body.vglass .acard,body.vglass .rcard,body.vglass .vstep-card,body.vglass .vsol-card,body.vglass .pmx-card,body.vglass .pmx-vcard,body.vglass .vcmp>div,body.vglass .mv-card,body.vglass .mv-modal .mv-box{
+ background:rgba(255,255,255,.58) !important;-webkit-backdrop-filter:var(--g-blur);backdrop-filter:var(--g-blur);border:1px solid var(--g-bd) !important;box-shadow:var(--g-in),var(--g-sh) !important}
+body.vglass .meter{background:rgba(255,255,255,.5) !important;-webkit-backdrop-filter:blur(12px) saturate(150%);backdrop-filter:blur(12px) saturate(150%);border:1px solid rgba(255,255,255,.7) !important;box-shadow:var(--g-in),0 8px 22px -14px rgba(20,40,110,.3)}
+body.vglass .toggle,body.vglass #vwBar,body.vglass #mvNav{background:rgba(255,255,255,.42) !important;-webkit-backdrop-filter:blur(16px) saturate(160%);backdrop-filter:blur(16px) saturate(160%);border:1px solid rgba(255,255,255,.75) !important;box-shadow:var(--g-in),0 10px 28px -18px rgba(20,40,110,.4)}
+body.vglass .toggle button{color:#1A2A55}
+body.vglass #vqbar{background:rgba(255,255,255,.66) !important;-webkit-backdrop-filter:blur(20px) saturate(170%);backdrop-filter:blur(20px) saturate(170%);border:1px solid rgba(255,255,255,.8) !important}
+body.vglass input:not([type=checkbox]):not([type=radio]):not([type=range]),body.vglass select,body.vglass textarea{background:rgba(255,255,255,.78) !important;border-color:rgba(120,140,200,.35) !important}
+body.vglass .panel:hover,body.vglass .mv-card:hover{box-shadow:var(--g-in),0 18px 44px -18px rgba(40,70,200,.45) !important}
+/* vendor directory stays extra readable */
+body.vglass .mv .mv-card{background:rgba(255,255,255,.7) !important}
+/* dark glass */
+body.vglass.vdark{background:
+ radial-gradient(900px 520px at 8% -6%,rgba(70,100,255,.34),transparent 62%),
+ radial-gradient(800px 520px at 96% 6%,rgba(130,70,240,.26),transparent 60%),
+ radial-gradient(900px 640px at 80% 108%,rgba(0,170,140,.2),transparent 62%),
+ linear-gradient(180deg,#0A1022,#0D1530) fixed !important}
+body.vglass.vdark .wrap .panel,body.vglass.vdark .panel,body.vglass.vdark .acard,body.vglass.vdark .rcard,body.vglass.vdark .vstep-card,body.vglass.vdark .vsol-card,body.vglass.vdark .pmx-card,body.vglass.vdark .pmx-vcard,body.vglass.vdark .vcmp>div,body.vglass.vdark .mv-card,body.vglass.vdark .mv-modal .mv-box{
+ background:rgba(22,34,72,.52) !important;border:1px solid rgba(255,255,255,.14) !important;box-shadow:inset 0 1px 0 rgba(255,255,255,.12),0 16px 40px -20px rgba(0,0,0,.7) !important}
+body.vglass.vdark .meter{background:rgba(255,255,255,.07) !important;border:1px solid rgba(255,255,255,.13) !important;box-shadow:inset 0 1px 0 rgba(255,255,255,.1)}
+body.vglass.vdark .toggle,body.vglass.vdark #vwBar,body.vglass.vdark #mvNav{background:rgba(255,255,255,.08) !important;border:1px solid rgba(255,255,255,.18) !important}
+body.vglass.vdark .toggle button{color:#D7E2FF}
+body.vglass.vdark #vqbar{background:rgba(18,28,62,.7) !important;border:1px solid rgba(255,255,255,.18) !important}
+body.vglass.vdark input:not([type=checkbox]):not([type=radio]):not([type=range]),body.vglass.vdark select,body.vglass.vdark textarea{background:rgba(255,255,255,.09) !important;border-color:rgba(255,255,255,.2) !important}
+body.vglass.vdark .mv .mv-card{background:rgba(22,34,72,.66) !important}
+/* fallbacks: no blur support, reduced transparency */
+@supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){
+ body.vglass:not(.vdark) .panel,body.vglass:not(.vdark) .meter,body.vglass:not(.vdark) .mv-card,body.vglass:not(.vdark) .rcard,body.vglass:not(.vdark) #vqbar{background:rgba(255,255,255,.94) !important}
+ body.vglass.vdark .panel,body.vglass.vdark .meter,body.vglass.vdark .mv-card{background:rgba(22,34,72,.94) !important}}
+@media (prefers-reduced-transparency:reduce){
+ body.vglass .panel,body.vglass .meter,body.vglass .mv-card,body.vglass .rcard,body.vglass #vqbar,body.vglass .toggle{background:rgba(255,255,255,.95) !important;-webkit-backdrop-filter:none;backdrop-filter:none}
+ body.vglass.vdark .panel,body.vglass.vdark .meter,body.vglass.vdark .mv-card,body.vglass.vdark .toggle{background:rgba(22,34,72,.96) !important}}
+/* switch */
+#vglassBtn{position:fixed;left:12px;bottom:calc(14px + env(safe-area-inset-bottom,0px));z-index:54;height:40px;padding:0 14px;border-radius:999px;border:1px solid rgba(255,255,255,.8);background:rgba(255,255,255,.62);-webkit-backdrop-filter:blur(14px) saturate(160%);backdrop-filter:blur(14px) saturate(160%);color:#1A2A55;font:600 12px 'Inter',system-ui,sans-serif;box-shadow:0 8px 24px -10px rgba(20,40,110,.45);cursor:pointer;display:flex;align-items:center;gap:6px}
+body.vdark #vglassBtn{background:rgba(22,34,72,.7);color:#D7E2FF;border-color:rgba(255,255,255,.2)}
+@media (max-width:700px){#vglassBtn{bottom:calc(92px + env(safe-area-inset-bottom,0px));left:10px;height:36px;padding:0 12px}}
+body.vmnre #vglassBtn{bottom:calc(14px + env(safe-area-inset-bottom,0px))}
+@media print{#vglassBtn{display:none}}
+</style>
+<script>
+(function(){
+var K='vionglass',on=true;
+try{if(localStorage.getItem(K)==='0')on=false;}catch(e){}
+var b=document.createElement('button');b.id='vglassBtn';b.type='button';
+function set(v){on=v;document.body.classList.toggle('vglass',on);b.textContent=on?'\u2728 Glass look \u00B7 Switch to Classic':'\u25A3 Classic look \u00B7 Switch to Glass';b.setAttribute('aria-pressed',on?'true':'false');try{localStorage.setItem(K,on?'1':'0');}catch(e){}}
+b.addEventListener('click',function(){set(!on);});
+document.body.appendChild(b);set(on);
+})();
+
+</script>
 </body>
 </html>
