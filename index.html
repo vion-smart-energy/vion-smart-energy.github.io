@@ -838,8 +838,8 @@ select,input[type=number],.preset-btn{border-radius:10px;}
         <button class="gti" data-tab="gti"><svg class="tbi" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 2v6M15 2v6"/><path d="M6 8h12v3a6 6 0 0 1-12 0z"/><path d="M12 17v5"/></svg> GTI (On-Grid)</button>
         <button class="hybrid" data-tab="hybrid"><svg class="tbi" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="7" width="18" height="10" rx="2"/><path d="M22 11v2"/><path d="M11 9l-2 4h3l-2 3"/></svg> Hybrid</button>
         <button class="offgrid" data-tab="offgrid"><svg class="tbi" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h16l-2 10H6z"/><path d="M8 4l-1 10M16 4l1 10M5 9h14"/><path d="M12 14v6M8 20h8"/></svg> Off-Grid</button>
-        <button class="know" data-tab="know"><svg class="tbi" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 2L4 14h7l-1 8 9-12h-7z"/></svg> Smart Energy Hub</button>
         <button class="mnre" data-tab="mnre"><svg class="tbi" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s7-6.2 7-12a7 7 0 0 0-14 0c0 5.8 7 12 7 12z"/><circle cx="12" cy="10" r="2.6"/></svg><span class="vtl-l"> MNRE Registered Vendors</span><span class="vtl-s">Vendors</span></button>
+        <button class="know" data-tab="know"><svg class="tbi" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 2L4 14h7l-1 8 9-12h-7z"/></svg> Smart Energy Hub</button>
         <button class="pm" data-tab="pm"><svg class="tbi" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 21h18"/><path d="M5 21V10M19 21V10M9 21v-7M15 21v-7"/><path d="M2 10l10-6 10 6z"/></svg> PM Surya Ghar Muft Bijli Yojana</button>
       </div>
       <div class="vwbar" id="vwBar" role="group" aria-label="Choose view"><span>VIEW</span><button type="button" data-v="cust" class="on">Customer View</button><button type="button" data-v="dist">Distributor View</button><em id="vwHint"></em></div>
@@ -4956,6 +4956,15 @@ body.vdark #tab-mnre .mv-t5chip.on{color:#1b1200}body.vdark #tab-mnre .mv-t5chip
 @keyframes mvOppGlow{0%,100%{box-shadow:0 0 6px rgba(34,197,94,.7),0 0 16px rgba(34,197,94,.45),inset 0 0 8px rgba(255,255,255,.25)}50%{box-shadow:0 0 8px rgba(249,115,22,.85),0 0 22px rgba(245,158,11,.6),inset 0 0 10px rgba(255,255,255,.3)}}
 @keyframes mvOppShine{0%{left:-60%}60%,100%{left:130%}}
 @media (prefers-reduced-motion:reduce){#tab-mnre #mvNav button[data-t=opp],#tab-mnre #mvNav button[data-t=opp]::after{animation:none}}
+
+/* Main tab: MNRE Vendors list highlight */
+#tabToggle button.mnre{position:relative;overflow:hidden;color:#fff !important;font-weight:800 !important;border:1px solid rgba(255,214,107,.85) !important;background:linear-gradient(120deg,#0B1F66,#1E3FAE,#7C3AED,#1E3FAE,#0B1F66) !important;background-size:300% 100% !important;animation:mnBg 4s ease-in-out infinite,mnGlow 2s ease-in-out infinite;text-shadow:0 1px 2px rgba(0,0,0,.4)}
+#tabToggle button.mnre svg{color:#FFD66B;stroke:#FFD66B}
+#tabToggle button.mnre::after{content:"";position:absolute;top:0;left:-60%;width:40%;height:100%;background:linear-gradient(100deg,transparent,rgba(255,236,170,.7),transparent);transform:skewX(-20deg);animation:mnShine 3s ease-in-out infinite;pointer-events:none}
+@keyframes mnBg{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
+@keyframes mnGlow{0%,100%{box-shadow:0 0 6px rgba(255,214,107,.55),0 0 16px rgba(124,58,237,.4)}50%{box-shadow:0 0 10px rgba(255,214,107,.95),0 0 24px rgba(30,63,174,.7)}}
+@keyframes mnShine{0%{left:-60%}55%,100%{left:130%}}
+@media (prefers-reduced-motion:reduce){#tabToggle button.mnre,#tabToggle button.mnre::after{animation:none}}
 </style>
 <script>
 /* MNRE REGISTERED VENDORS MODULE */
