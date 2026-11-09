@@ -4331,7 +4331,7 @@ body.vdark .vmenu{background:#121B36;border-color:#24305A}body.vdark .vmenu .vro
   function curView(){var b=document.querySelector('#vwBar button.on');return b?b.dataset.v:'cust';}
   function syncView(){var v=curView();document.body.classList.toggle('vcust',v==='cust');document.body.classList.toggle('vdistv',v!=='cust');
     var t=activeTab();document.querySelectorAll('#tabToggle button').forEach(function(b){b.classList.remove('vpar');});
-    if(v==='cust'&&/^(gti|hybrid|offgrid)$/.test(t)){var sb=document.querySelector('#tabToggle button[data-tab="solar"]');if(sb)sb.classList.add('vpar');}
+    if(/^(gti|hybrid|offgrid)$/.test(t)){var sb=document.querySelector('#tabToggle button[data-tab="solar"]');if(sb)sb.classList.add('vpar');}
     if(v==='cust'&&t==='know'){var ib=document.querySelector('#tabToggle button[data-tab="inv"]');if(ib)ib.click();}}
   function go(t){var b=document.querySelector('#tabToggle button[data-tab="'+t+'"]');if(b)b.click();}
 
@@ -4965,6 +4965,9 @@ body.vdark #tab-mnre .mv-t5chip.on{color:#1b1200}body.vdark #tab-mnre .mv-t5chip
 @keyframes mnGlow{0%,100%{box-shadow:0 0 6px rgba(255,214,107,.55),0 0 16px rgba(124,58,237,.4)}50%{box-shadow:0 0 10px rgba(255,214,107,.95),0 0 24px rgba(30,63,174,.7)}}
 @keyframes mnShine{0%{left:-60%}55%,100%{left:130%}}
 @media (prefers-reduced-motion:reduce){#tabToggle button.mnre,#tabToggle button.mnre::after{animation:none}}
+
+/* GTI/Hybrid/Off-Grid open only from the Solar tab */
+#tabToggle button[data-tab=gti],#tabToggle button[data-tab=hybrid],#tabToggle button[data-tab=offgrid]{display:none !important}
 </style>
 <script>
 /* MNRE REGISTERED VENDORS MODULE */
