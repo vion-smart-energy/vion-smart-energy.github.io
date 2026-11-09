@@ -4918,6 +4918,33 @@ body.vmnre #vqbar{display:none !important}
 body.vcust #tabToggle{grid-template-columns:repeat(5,minmax(0,1fr)) !important}
 @media (max-width:420px){body.vcust #tabToggle button .vtl-s{font-size:11px !important}}
 @media (prefers-reduced-motion:reduce){#tab-mnre .mv-dot,#tab-mnre .gapc{animation:none}#tab-mnre .mv-bar i u{transition:none}}
+
+/* ---- glass map + top-5 tags ---- */
+#tab-mnre .mv-map{background:radial-gradient(60% 50% at 18% 20%,rgba(34,211,238,.35),transparent 70%),radial-gradient(55% 55% at 85% 25%,rgba(139,92,246,.4),transparent 70%),radial-gradient(60% 55% at 60% 95%,rgba(236,72,153,.3),transparent 70%),linear-gradient(160deg,#0B1B52,#0A1236 70%);border:1px solid rgba(255,255,255,.28);box-shadow:0 18px 50px rgba(20,30,90,.35),inset 0 1px 0 rgba(255,255,255,.35),inset 0 0 70px rgba(255,255,255,.05)}
+#tab-mnre .mv-map svg .mv-land{fill:rgba(255,255,255,.14);stroke:rgba(255,255,255,.65);stroke-width:.9}
+#tab-mnre .mv-map svg .mv-gl{stroke:rgba(255,255,255,.1)}
+#tab-mnre .mv-mb{background:rgba(255,255,255,.14);border-color:rgba(255,255,255,.35);backdrop-filter:blur(12px) saturate(160%);-webkit-backdrop-filter:blur(12px) saturate(160%);color:#EAF2FF}
+#tab-mnre .mv-mb.on{background:rgba(245,179,1,.92);border-color:#FFD66B;color:#1b1200}
+#tab-mnre .mv-pulse{transform-box:fill-box;transform-origin:center;animation:mvPulse 1.6s ease-out infinite}
+@keyframes mvPulse{0%{transform:scale(.6);opacity:.95}100%{transform:scale(2.1);opacity:0}}
+#tab-mnre .mv-t5card{background:rgba(255,255,255,.55);backdrop-filter:blur(16px) saturate(160%);-webkit-backdrop-filter:blur(16px) saturate(160%);border:1px solid rgba(255,255,255,.7)}
+#tab-mnre .mv-t5chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
+#tab-mnre .mv-t5chip{display:grid;grid-template-columns:26px 1fr;column-gap:8px;align-items:center;text-align:left;min-height:48px;padding:6px 12px 6px 8px;border-radius:14px;border:1px solid rgba(255,255,255,.75);background:rgba(255,255,255,.6);color:#0f1b4d;cursor:pointer;font-family:'Inter',sans-serif;max-width:100%}
+#tab-mnre .mv-t5chip b{grid-row:1/3;width:26px;height:26px;border-radius:50%;background:#1E3FAE;color:#fff;display:flex;align-items:center;justify-content:center;font-size:13px}
+#tab-mnre .mv-t5chip .n{font-weight:700;font-size:13px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:230px}
+#tab-mnre .mv-t5chip .s{font-size:12px;color:#44507f}
+#tab-mnre .mv-t5chip.on{background:linear-gradient(135deg,#FFE08A,#F5B301);border-color:#fff}
+#tab-mnre .mv-t5chip.on b{background:#1b1200}
+#tab-mnre .mv-pincard{margin-top:10px;padding:12px 14px;border-radius:16px;background:rgba(255,255,255,.7);border:1px solid rgba(255,255,255,.9);box-shadow:0 8px 24px rgba(30,63,174,.15)}
+#tab-mnre .mv-pincard .pt{font-weight:800;font-size:15px;color:#0f1b4d}
+#tab-mnre .mv-pincard .pl{font-size:12.5px;color:#44507f;margin-top:2px}
+#tab-mnre .mv-pincard .pr{display:flex;flex-wrap:wrap;gap:6px 18px;margin:8px 0 4px;font-size:12.5px;color:#44507f}
+#tab-mnre .mv-pincard .pr em{font-style:normal;font-weight:800;font-size:17px;color:#0f1b4d}
+body.vdark #tab-mnre .mv-t5card,body.vdark #tab-mnre .mv-pincard{background:rgba(22,34,72,.6);border-color:rgba(255,255,255,.18)}
+body.vdark #tab-mnre .mv-t5chip{background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.2);color:#EAF2FF}
+body.vdark #tab-mnre .mv-t5chip .s,body.vdark #tab-mnre .mv-pincard .pl,body.vdark #tab-mnre .mv-pincard .pr{color:#B9C7FF}
+body.vdark #tab-mnre .mv-pincard .pt,body.vdark #tab-mnre .mv-pincard .pr em{color:#fff}
+body.vdark #tab-mnre .mv-t5chip.on{color:#1b1200}body.vdark #tab-mnre .mv-t5chip.on .s{color:#4a3a00}
 </style>
 <script>
 /* MNRE REGISTERED VENDORS MODULE */
@@ -4974,6 +5001,7 @@ function prep(raw){
         dd.n++;dd.kw+=r[4]||0;dd.ins+=r[5]||0;if((r[5]||0)>0)dd.act++;
         if(r[2]==null||r[4]==null||r[5]==null)missing++;
       });
+      dd.top=blk.rows.map(function(r){return {name:nice(r[0]),brand:nice(r[1]||''),r:r[2],rc:r[3]||0,kw:r[4]||0,ins:r[5]||0};}).filter(function(x){return x.name;}).sort(function(a,b){return b.ins-a.ins||(b.r||0)-(a.r||0)||b.rc-a.rc;}).slice(0,5);
       DS.push(dd);DM[st+'|'+d]=dd;
     });
   });
@@ -4997,7 +5025,7 @@ function fdate(iso){try{return new Date(iso).toLocaleString(lang()==='hi'?'hi-IN
 function stars(r){if(r==null)return '–';var f=Math.round(r);return '<span class="mv-stars">'+'★'.repeat(f)+'☆'.repeat(5-f)+'</span> '+r.toFixed(1);}
 
 /* ================= UI STATE ================= */
-var S={tab:'find',st:'',d:'',q:'',typ:'',brand:'',status:'',sort:'score',lim:24,loc:null,locMsg:'',mode:'bubble',lvl:'india',mst:'',md:'',rad:50,radC:null,saved:store.get('vionSavedV',[]),leads:store.get('vionLeads',[]),audit:store.get('vionAudit',[]),lead:null};
+var S={tab:'find',st:'',d:'',q:'',typ:'',brand:'',status:'',sort:'score',lim:24,loc:null,locMsg:'',mode:'top5',vsel:-1,lvl:'india',mst:'',md:'',rad:50,radC:null,saved:store.get('vionSavedV',[]),leads:store.get('vionLeads',[]),audit:store.get('vionAudit',[]),lead:null};
 var mvBody=null;
 function opt(v,l,cur){return '<option value="'+esc(v)+'"'+(String(cur)===String(v)?' selected':'')+'>'+esc(l)+'</option>';}
 function districtsOf(st){return DS.filter(function(x){return !st||x.st===st;}).sort(function(a,b){return a.d.localeCompare(b.d);});}
@@ -5179,15 +5207,15 @@ function rMap(){
   var vb,pts=md;
   if(S.lvl==='india'){vb=[0,0,30.5*PX,31.5*PX];}
   else if(S.lvl==='state'){pts=md.filter(function(p){return p.x.st===S.mst;});vb=boxOf(pts,22);}
-  else{var q=md.filter(function(p){return p.x.st===S.mst&&p.x.d===S.md;})[0];pts=q?[q]:[];vb=q?[q.px-45,q.py-45,90,90]:[0,0,100,100];}
+  else{var q=md.filter(function(p){return p.x.st===S.mst&&p.x.d===S.md;})[0];pts=q?[q]:[];vb=q?[q.px-60,q.py-60,120,120]:[0,0,100,100];}
   var asp=Math.max(vb[2]/vb[3],.5);
   var h='<div class="mv-crumb"><button data-a="lv" data-l="india" type="button">🇮🇳 India</button>'+(S.mst?'<span>›</span><button data-a="lv" data-l="state" type="button">'+esc(stName(S.mst))+'</button>':'')+(S.md&&S.lvl==='district'?'<span>›</span><button type="button" disabled>'+esc(S.md)+'</button><span>›</span><span>'+L('Vendors','वेंडर','વેન્ડર')+'</span>':'')+'</div>';
-  var modes=[['bubble',L('Bubbles','बबल','બબલ')],['heat',L('Heat map','हीट मैप','હીટ મેપ')],['density',L('Density','डेंसिटी','ડેન્સિટી')],['cluster',L('Clusters','क्लस्टर','ક્લસ્ટર')],['territory',L('Territory','टेरिटरी','ટેરિટરી')],['gap',L('Coverage gaps','कवरेज गैप','કવરેજ ગેપ')],['reach',L('Service reach','सर्विस रीच','સર્વિસ રીચ')]];
+  var modes=[['top5','★ '+L('Top 5','टॉप 5','ટોપ 5')],['bubble',L('Bubbles','बबल','બબલ')],['heat',L('Heat map','हीट मैप','હીટ મેપ')],['density',L('Density','डेंसिटी','ડેન્સિટી')],['cluster',L('Clusters','क्लस्टर','ક્લસ્ટર')],['territory',L('Territory','टेरिटरी','ટેરિટરી')],['gap',L('Coverage gaps','कवरेज गैप','કવરેજ ગેપ')],['reach',L('Service reach','सर्विस रीच','સર્વિસ રીચ')]];
   h+='<div class="mv-map"><div class="ov">'+modes.map(function(m){return '<button class="mv-mb'+(S.mode===m[0]?' on':'')+'" data-a="mode" data-m="'+m[0]+'" type="button">'+m[1]+'</button>';}).join('')+'</div>';
   h+='<svg id="mvSvg" viewBox="'+vb.map(function(n){return n.toFixed(1);}).join(' ')+'" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Vendor coverage map"><defs><radialGradient id="mvHg"><stop offset="0" stop-color="#FF4D6D" stop-opacity=".85"/><stop offset=".5" stop-color="#F59E0B" stop-opacity=".4"/><stop offset="1" stop-color="#22D3EE" stop-opacity="0"/></radialGradient><filter id="mvGl"><feGaussianBlur stdDeviation="1.6" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>';
-  for(var g=70;g<=98;g+=5){var gx=(g-LON0)*PX;h+='<line x1="'+gx+'" y1="0" x2="'+gx+'" y2="'+31.5*PX+'" stroke="#1B2B66" stroke-width=".4"/>';}
-  for(var g2=10;g2<=35;g2+=5){var gy=(LAT0-g2)*PX;h+='<line x1="0" y1="'+gy+'" x2="'+30.5*PX+'" y2="'+gy+'" stroke="#1B2B66" stroke-width=".4"/>';}
-  if(S.lvl==='india')h+='<polygon points="'+INDIA.map(function(p){var q=P(p[0],p[1]);return q[0].toFixed(1)+','+q[1].toFixed(1);}).join(' ')+'" fill="#0E1E55" stroke="#2E4BB8" stroke-width=".8" stroke-linejoin="round"/>';
+  for(var g=70;g<=98;g+=5){var gx=(g-LON0)*PX;h+='<line x1="'+gx+'" y1="0" x2="'+gx+'" y2="'+31.5*PX+'" stroke="#1B2B66" stroke-width=".4" class="mv-gl"/>';}
+  for(var g2=10;g2<=35;g2+=5){var gy=(LAT0-g2)*PX;h+='<line x1="0" y1="'+gy+'" x2="'+30.5*PX+'" y2="'+gy+'" stroke="#1B2B66" stroke-width=".4" class="mv-gl"/>';}
+  if(S.lvl==='india')h+='<polygon class="mv-land" points="'+INDIA.map(function(p){var q=P(p[0],p[1]);return q[0].toFixed(1)+','+q[1].toFixed(1);}).join(' ')+'" fill="#0E1E55" stroke="#2E4BB8" stroke-width=".8" stroke-linejoin="round"/>';
   var u=vb[2]/600;/* unit scale so markers stay readable when zoomed */
   var mk='';
   if(S.lvl==='india'){
@@ -5203,17 +5231,30 @@ function rMap(){
       if(S.mode==='territory'){mk+='<circle cx="'+p.px+'" cy="'+p.py+'" r="'+(Math.sqrt(x.n)*1.6+9)*u*2.2+'" fill="'+tierCol(x.kw,mxK)+'" opacity=".28" stroke="'+tierCol(x.kw,mxK)+'" stroke-width="'+.7*u+'"/>';}
       if(S.mode==='reach'){mk+='<circle cx="'+p.px+'" cy="'+p.py+'" r="'+60*PX/111+'" fill="#22D3EE" opacity=".13" stroke="#22D3EE" stroke-width="'+.5*u+'" stroke-dasharray="'+2*u+' '+2*u+'"/>';}
       if(S.mode==='gap'){var low=x.n<mxN*.35;col=low?'#E5294F':'#2B3A78';op=low?1:.7;cls=low?' class="gapc"':'';if(low)extra='<circle cx="'+p.px+'" cy="'+p.py+'" r="'+r*2.2+'" fill="none" stroke="#E5294F" stroke-width="'+1.2*u+'"/>';}
+      if(S.mode==='top5'){col='#F5B301';}
       var sel=(S.lvl==='district'&&S.md===x.d);
-      mk+='<g data-a="di" data-s="'+esc(x.st)+'" data-d="'+esc(x.d)+'" style="cursor:pointer"'+cls+'>'+extra+'<circle cx="'+p.px+'" cy="'+p.py+'" r="'+r+'" fill="'+col+'" opacity="'+op+'" stroke="'+(sel?'#fff':'rgba(255,255,255,.7)')+'" stroke-width="'+(sel?2.4:1)*u+'" filter="url(#mvGl)"/><text x="'+p.px+'" y="'+(p.py-r-2*u)+'" text-anchor="middle" fill="#E6EEFF" font-size="'+(S.lvl==='district'?9:8)*u*1.25+'" font-weight="700">'+esc(x.d)+'</text></g>';});
+      mk+='<g data-a="di" data-s="'+esc(x.st)+'" data-d="'+esc(x.d)+'" style="cursor:pointer"'+cls+'>'+extra+'<circle cx="'+p.px+'" cy="'+p.py+'" r="'+r+'" fill="'+col+'" opacity="'+op+'" stroke="'+(sel?'#fff':'rgba(255,255,255,.7)')+'" stroke-width="'+(sel?2.4:1)*u+'" filter="url(#mvGl)"/><text x="'+p.px+'" y="'+(p.py-r-2*u)+'" text-anchor="middle" fill="#E6EEFF" font-size="'+(S.lvl==='district'?9:8)*u*1.25+'" font-weight="700">'+esc(x.d)+'</text>'+(S.mode==='top5'&&S.lvl==='state'?'<text x="'+p.px+'" y="'+(p.py+r+9*u*1.1)+'" text-anchor="middle" fill="#FFD66B" font-size="'+7.5*u*1.1+'" font-weight="800" class="mv-t5">★ Top 5</text>':'')+'</g>';});
+    if(S.lvl==='district'&&pts[0]){var dq=pts[0],tp=dq.x.top||[],RR=17;
+      tp.forEach(function(t,i){var ang=(-90+i*72)*Math.PI/180,tx=dq.px+RR*Math.cos(ang),ty=dq.py+RR*Math.sin(ang),on=(S.vsel===i),right=Math.cos(ang)>=-.05,top=(i===0);
+        var lab=t.name.length>17?t.name.slice(0,16)+'…':t.name;
+        mk+='<g data-a="vsel" data-i="'+i+'" style="cursor:pointer" class="mv-tg'+(on?' on':'')+'"><line x1="'+dq.px+'" y1="'+dq.py+'" x2="'+tx+'" y2="'+ty+'" stroke="'+(on?'#FFD66B':'rgba(255,255,255,.45)')+'" stroke-width=".5" stroke-dasharray="1.2 1.2"/><circle cx="'+tx+'" cy="'+ty+'" r="'+(on?5.4:4.4)+'" fill="'+(on?'#F5B301':'rgba(255,255,255,.22)')+'" stroke="'+(on?'#fff':'rgba(255,255,255,.8)')+'" stroke-width=".7"/><text x="'+tx+'" y="'+(ty+1.5)+'" text-anchor="middle" fill="'+(on?'#1b1200':'#fff')+'" font-size="4.4" font-weight="800">'+(i+1)+'</text><text x="'+(top?tx:right?tx+7:tx-7)+'" y="'+(top?ty-7:ty+1.2)+'" text-anchor="'+(top?'middle':right?'start':'end')+'" fill="#fff" font-size="3.1" font-weight="700" stroke="#061030" stroke-width=".7" paint-order="stroke">'+esc(lab)+'</text></g>';});
+      if(S.vsel>=0&&tp[S.vsel]){mk+='<circle cx="'+dq.px+'" cy="'+dq.py+'" r="7" fill="none" stroke="#FFD66B" stroke-width=".9" class="mv-pulse"/><path d="M'+dq.px+' '+(dq.py+1.2)+' c-3.6 -4.2 -4.6 -6 -4.6 -8 a4.6 4.6 0 1 1 9.2 0 c0 2 -1 3.8 -4.6 8z" fill="#F5B301" stroke="#fff" stroke-width=".7"/><circle cx="'+dq.px+'" cy="'+(dq.py-7.2)+'" r="1.7" fill="#fff"/>';}
+    }
     if(S.radC&&S.mode!=='cluster'){var c=P(S.radC.lon,S.radC.lat);mk+='<circle cx="'+c[0]+'" cy="'+c[1]+'" r="'+S.rad*PX/111+'" fill="rgba(34,211,238,.12)" stroke="#22D3EE" stroke-width="'+1.4*u+'" stroke-dasharray="'+4*u+' '+3*u+'"/><circle cx="'+c[0]+'" cy="'+c[1]+'" r="'+3*u*1.5+'" fill="#fff"/>';}
   }
   h+=mk+'</svg></div>';
-  var lg={bubble:L('Size = vendors; colour = installed kWp (cyan high, magenta low)','आकार = वेंडर; रंग = इंस्टॉल्ड kWp','કદ = વેન્ડર; રંગ = ઇન્સ્ટોલ્ડ kWp'),heat:L('Glow = installed capacity','चमक = इंस्टॉल्ड क्षमता','ચમક = ઇન્સ્ટોલ્ડ ક્ષમતા'),density:L('Colour and size = vendors per district','रंग और आकार = ज़िले में वेंडर','રંગ અને કદ = જિલ્લામાં વેન્ડર'),cluster:L('Numbers = districts grouped together (state view)','संख्या = एक साथ समूहित ज़िले (राज्य व्यू)','સંખ્યા = સાથે જૂથ થયેલા જિલ્લા (રાજ્ય વ્યૂ)'),territory:L('Discs = territory strength','डिस्क = टेरिटरी ताकत','ડિસ્ક = ટેરિટરી તાકાત'),gap:L('Pulsing red = districts with under 35% of the busiest district’s vendors','लाल धड़कता = सबसे व्यस्त ज़िले के 35% से कम वेंडर','લાલ ધબકતું = સૌથી વ્યસ્ત જિલ્લાના 35% થી ઓછા વેન્ડર'),reach:L('Dashed circles = 60 km service reach','डैश गोले = 60 km सर्विस रीच','ડેશ વર્તુળ = 60 km સર્વિસ રીચ')}[S.mode];
+  var lg={top5:L('Gold = tap a district to see its top 5 vendors, ranked by installations','गोल्ड = ज़िले पर टैप कर टॉप 5 वेंडर देखें (इंस्टॉलेशन के अनुसार)','ગોલ્ડ = જિલ્લા પર ટેપ કરી ટોપ 5 વેન્ડર જુઓ (ઇન્સ્ટોલેશન મુજબ)'),bubble:L('Size = vendors; colour = installed kWp (cyan high, magenta low)','आकार = वेंडर; रंग = इंस्टॉल्ड kWp','કદ = વેન્ડર; રંગ = ઇન્સ્ટોલ્ડ kWp'),heat:L('Glow = installed capacity','चमक = इंस्टॉल्ड क्षमता','ચમક = ઇન્સ્ટોલ્ડ ક્ષમતા'),density:L('Colour and size = vendors per district','रंग और आकार = ज़िले में वेंडर','રંગ અને કદ = જિલ્લામાં વેન્ડર'),cluster:L('Numbers = districts grouped together (state view)','संख्या = एक साथ समूहित ज़िले (राज्य व्यू)','સંખ્યા = સાથે જૂથ થયેલા જિલ્લા (રાજ્ય વ્યૂ)'),territory:L('Discs = territory strength','डिस्क = टेरिटरी ताकत','ડિસ્ક = ટેરિટરી તાકાત'),gap:L('Pulsing red = districts with under 35% of the busiest district’s vendors','लाल धड़कता = सबसे व्यस्त ज़िले के 35% से कम वेंडर','લાલ ધબકતું = સૌથી વ્યસ્ત જિલ્લાના 35% થી ઓછા વેન્ડર'),reach:L('Dashed circles = 60 km service reach','डैश गोले = 60 km सर्विस रीच','ડેશ વર્તુળ = 60 km સર્વિસ રીચ')}[S.mode];
   h+='<div class="mv-legend"><span>'+lg+'</span><span>'+L('Positions are approximate district centres','स्थान अनुमानित ज़िला केंद्र हैं','સ્થાન અંદાજિત જિલ્લા કેન્દ્ર છે')+'</span></div>';
   h+='<div class="mv-card" style="margin-top:12px"><h2>'+L('Radius search','रेडियस सर्च','રેડિયસ સર્ચ')+'</h2><div class="mv-f"><div><label>'+L('Centre district','केंद्र ज़िला','કેન્દ્ર જિલ્લો')+'</label><select id="mvRc">'+opt('',L('Choose','चुनें','પસંદ કરો'),S.radC?S.radC.k:'')+DS.slice().sort(function(a,b){return a.d.localeCompare(b.d);}).map(function(x){return opt(x.st+'|'+x.d,x.d+' ('+stName(x.st)+')',S.radC?S.radC.k:'');}).join('')+'</select></div><div><label>'+L('Radius (km)','दायरा (km)','ત્રિજ્યા (km)')+'</label><input id="mvRk" type="number" min="10" max="500" step="10" value="'+S.rad+'"></div></div>';
   if(S.radC){var inn=DS.map(function(x){return {x:x,km:hav(S.radC.lat,S.radC.lon,x.lat,x.lon)};}).filter(function(a){return a.km<=S.rad;}).sort(function(a,b){return a.km-b.km;});h+='<p class="mv-note" style="margin:0 0 8px"><b>'+inn.length+'</b> '+L('districts and','ज़िले और','જિલ્લા અને')+' <b>'+nf(inn.reduce(function(a,q){return a+q.x.n;},0))+'</b> '+L('vendor listings within '+S.rad+' km','वेंडर लिस्टिंग '+S.rad+' km के भीतर','વેન્ડર લિસ્ટિંગ '+S.rad+' km ની અંદર')+':</p>'+inn.map(function(q){return '<span class="mv-tag">'+esc(q.x.d)+' · '+Math.round(q.km)+' km · '+q.x.n+'</span>';}).join('');}
   h+='</div>';
-  if(S.lvl==='district'){var rows=[];V.forEach(function(v){if(v.dists.some(function(q){return q.st===S.mst&&q.d===S.md;}))rows.push(v);});h+='<div class="mv-card"><h2>'+esc(S.md)+' <small>'+rows.length+' '+L('vendors','वेंडर','વેન્ડર')+'</small></h2><div class="mv-grid g3">'+rows.slice(0,9).map(function(v){return vcard(v,DM[S.mst+'|'+S.md]);}).join('')+'</div><div class="mv-more"><button class="mv-btn" data-a="opendir" type="button">'+L('Open all in Directory','डायरेक्टरी में सभी खोलें','ડિરેક્ટરીમાં બધા ખોલો')+'</button></div></div>';}
+  if(S.lvl==='district'){var dd0=DM[S.mst+'|'+S.md],tp0=(dd0&&dd0.top)||[];
+    var rt=function(r){return r==null?'–':(Math.round(r*10)/10)+'/5';};
+    h+='<div class="mv-card mv-t5card"><h2>★ '+L('Top 5 vendors in','टॉप 5 वेंडर:','ટોપ 5 વેન્ડર:')+' '+esc(S.md)+' <small>'+L('by installations','इंस्टॉलेशन के अनुसार','ઇન્સ્ટોલેશન મુજબ')+'</small></h2><div class="mv-t5chips">'+tp0.map(function(t,i){return '<button type="button" class="mv-t5chip'+(S.vsel===i?' on':'')+'" data-a="vsel" data-i="'+i+'"><b>'+(i+1)+'</b><span class="n">'+esc(t.name)+'</span><span class="s">★ '+rt(t.r)+' · '+nf(t.ins)+' '+L('installs','इंस्टॉल','ઇન્સ્ટોલ')+'</span></button>';}).join('')+'</div>';
+    if(S.vsel>=0&&tp0[S.vsel]){var T=tp0[S.vsel];h+='<div class="mv-pincard"><div class="pt">📍 '+esc(T.name)+'</div><div class="pl">'+esc(S.md)+', '+esc(stName(S.mst))+' <i>('+L('approx. district centre','अनुमानित ज़िला केंद्र','અંદાજિત જિલ્લા કેન્દ્ર')+')</i></div><div class="pr"><span><em>'+rt(T.r)+'</em> '+L('rating','रेटिंग','રેટિંગ')+(T.rc?' ('+nf(T.rc)+' '+L('reviews','रिव्यू','રિવ્યૂ')+')':'')+'</span><span><em>'+nf(T.ins)+'</em> '+L('installations','इंस्टॉलेशन','ઇન્સ્ટોલેશન')+'</span><span><em>'+nf(T.kw)+'</em> kWp</span></div>'+(T.brand?'<div class="pl">'+L('Brand','ब्रांड','બ્રાન્ડ')+': '+esc(T.brand)+'</div>':'')+'</div>';}
+    else h+='<p class="mv-note" style="margin:8px 0 0">'+L('Tap a vendor to locate it on the map.','मैप पर देखने के लिए वेंडर पर टैप करें।','નકશા પર જોવા વેન્ડર પર ટેપ કરો.')+'</p>';
+    h+='</div>';
+    var rows=[];V.forEach(function(v){if(v.dists.some(function(q){return q.st===S.mst&&q.d===S.md;}))rows.push(v);});h+='<div class="mv-card"><h2>'+esc(S.md)+' <small>'+rows.length+' '+L('vendors','वेंडर','વેન્ડર')+'</small></h2><div class="mv-grid g3">'+rows.slice(0,9).map(function(v){return vcard(v,DM[S.mst+'|'+S.md]);}).join('')+'</div><div class="mv-more"><button class="mv-btn" data-a="opendir" type="button">'+L('Open all in Directory','डायरेक्टरी में सभी खोलें','ડિરેક્ટરીમાં બધા ખોલો')+'</button></div></div>';}
   else if(S.lvl==='state'){h+='<p class="mv-note">'+L('Tap a district bubble to drill down to its vendors.','वेंडर देखने के लिए ज़िले के बबल पर टैप करें।','વેન્ડર જોવા જિલ્લાના બબલ પર ટેપ કરો.')+'</p>';}
   else h+='<p class="mv-note">'+L('Tap a state to drill down: India, State, District, Vendor. Taluka level is not published by the portal.','ड्रिल-डाउन के लिए राज्य पर टैप करें: भारत, राज्य, ज़िला, वेंडर। तालुका स्तर पोर्टल पर नहीं है।','ડ્રિલ-ડાઉન માટે રાજ્ય પર ટેપ કરો: ભારત, રાજ્ય, જિલ્લો, વેન્ડર. તાલુકા સ્તર પોર્ટલ પર નથી.')+'</p>';
   mvBody.innerHTML=h;
@@ -5318,9 +5359,10 @@ root.addEventListener('click',function(e){
   else if(a==='close'||e.target.id==='mvModal'){closeV();}
   else if(a==='save'){toggleSave(el.dataset.k);el.innerHTML=isSaved(el.dataset.k)?'★ '+L('Saved','सहेजा','સાચવ્યું'):'☆ '+L('Save','सहेजें','સાચવો');}
   else if(a==='nocontact'){alert(L('Phone numbers and e-mails are not imported (privacy review). Use "Profile", then "Contact via official portal", or the WhatsApp enquiry.','फोन और ईमेल आयात नहीं किए गए (गोपनीयता समीक्षा)। "प्रोफ़ाइल" में "आधिकारिक पोर्टल से संपर्क" या WhatsApp पूछताछ इस्तेमाल करें।','ફોન અને ઇમેઇલ આયાત થયા નથી (ગોપનીયતા સમીક્ષા). "પ્રોફાઇલ" માં "સત્તાવાર પોર્ટલ દ્વારા સંપર્ક" અથવા WhatsApp પૂછપરછ વાપરો.'));}
-  else if(a==='st'){S.mst=el.dataset.s;S.lvl='state';S.md='';rMap();}
-  else if(a==='di'){S.mst=el.dataset.s;S.md=el.dataset.d;S.lvl='district';rMap();}
-  else if(a==='lv'){if(el.dataset.l==='india'){S.lvl='india';S.mst='';S.md='';}else{S.lvl='state';S.md='';}rMap();}
+  else if(a==='st'){S.mst=el.dataset.s;S.lvl='state';S.md='';S.vsel=-1;rMap();}
+  else if(a==='di'){S.mst=el.dataset.s;S.md=el.dataset.d;S.lvl='district';S.vsel=-1;rMap();}
+  else if(a==='vsel'){S.vsel=(S.vsel===+el.dataset.i)?-1:+el.dataset.i;rMap();}
+  else if(a==='lv'){S.vsel=-1;if(el.dataset.l==='india'){S.lvl='india';S.mst='';S.md='';}else{S.lvl='state';S.md='';}rMap();}
   else if(a==='mode'){S.mode=el.dataset.m;rMap();}
   else if(a==='cl'){S.lvl='state';rMap();}
   else if(a==='opendir'){S.tab='dir';S.st=S.mst;S.d=S.md;S.q='';S.lim=24;render();}
