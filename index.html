@@ -5509,6 +5509,8 @@ body:not(.vglass) #vglassBtn::before{content:"▣"}
 .vfullrow>.vspan{grid-column:1/-1}
 .vfullrow:empty{display:none}
 @media (max-width:900px){.vfullrow{display:block}.vfullrow>*{margin:0 0 18px !important}}
+
+.vgone{display:none !important}
 </style>
 <script>
 (function(){
@@ -5546,7 +5548,13 @@ function bal(tab){
   var ns=Array.prototype.filter.call(full.children,function(e){return !(e.id==='savePanel'||e.classList.contains('d3')||/^vrange/.test(e.id));});
   if(ns.length%2===1)ns[ns.length-1].classList.add('vspan');
 }
-function all(){
+function prune(){
+  var t=document.getElementById('tab-inv');if(!t)return;
+  var sel=['.d3','#bhIPanel','#cmpPanel'];sel.forEach(function(s){var n=t.querySelectorAll(s);for(var i=0;i<n.length;i++)n[i].classList.add('vgone');});
+  var hp=t.querySelectorAll('#hxRoot > .panel');for(var k=0;k<hp.length;k++){var h=hp[k].querySelector('h2');if(h&&/Dealer and Finance/i.test(h.textContent))hp[k].classList.add('vgone');}
+  var r=t.querySelector('#vrange-inv .vwn');if(r&&r.textContent.trim()==='9')r.textContent='8';
+}
+function all(){prune();
   if(document.activeElement&&/INPUT|SELECT|TEXTAREA/.test(document.activeElement.tagName)&&document.activeElement.closest('div[id^="tab-"]'))return;
   var tabs=document.querySelectorAll('div[id^="tab-"]');for(var i=0;i<tabs.length;i++){try{bal(tabs[i]);}catch(e){}}
 }
