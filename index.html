@@ -4945,6 +4945,8 @@ body.vdark #tab-mnre .mv-t5chip{background:rgba(255,255,255,.1);border-color:rgb
 body.vdark #tab-mnre .mv-t5chip .s,body.vdark #tab-mnre .mv-pincard .pl,body.vdark #tab-mnre .mv-pincard .pr{color:#B9C7FF}
 body.vdark #tab-mnre .mv-pincard .pt,body.vdark #tab-mnre .mv-pincard .pr em{color:#fff}
 body.vdark #tab-mnre .mv-t5chip.on{color:#1b1200}body.vdark #tab-mnre .mv-t5chip.on .s{color:#4a3a00}
+
+@media (max-width:520px){#tab-mnre .g3{grid-template-columns:minmax(0,1fr)}}
 </style>
 <script>
 /* MNRE REGISTERED VENDORS MODULE */
@@ -5025,7 +5027,7 @@ function fdate(iso){try{return new Date(iso).toLocaleString(lang()==='hi'?'hi-IN
 function stars(r){if(r==null)return '–';var f=Math.round(r);return '<span class="mv-stars">'+'★'.repeat(f)+'☆'.repeat(5-f)+'</span> '+r.toFixed(1);}
 
 /* ================= UI STATE ================= */
-var S={tab:'find',st:'',d:'',q:'',typ:'',brand:'',status:'',sort:'score',lim:24,loc:null,locMsg:'',mode:'top5',vsel:-1,lvl:'india',mst:'',md:'',rad:50,radC:null,saved:store.get('vionSavedV',[]),leads:store.get('vionLeads',[]),audit:store.get('vionAudit',[]),lead:null};
+var S={tab:'find',st:'',d:'',q:'',typ:'',brand:'',status:'',sort:'score',lim:24,loc:null,locMsg:'',mode:'top5',vsel:-1,fsel:-1,lvl:'india',mst:'',md:'',rad:50,radC:null,saved:store.get('vionSavedV',[]),leads:store.get('vionLeads',[]),audit:store.get('vionAudit',[]),lead:null};
 var mvBody=null;
 function opt(v,l,cur){return '<option value="'+esc(v)+'"'+(String(cur)===String(v)?' selected':'')+'>'+esc(l)+'</option>';}
 function districtsOf(st){return DS.filter(function(x){return !st||x.st===st;}).sort(function(a,b){return a.d.localeCompare(b.d);});}
@@ -5076,7 +5078,7 @@ function rFind(){
   if(S.loc&&S.nearD)h+='<div class="mv-card"><b>'+L('Nearest districts with vendors','वेंडर वाले सबसे नज़दीकी ज़िले','વેન્ડર ધરાવતા નજીકના જિલ્લા')+':</b> '+S.nearD.map(function(n){return '<span class="mv-tag">'+esc(n.x.d)+' ≈'+Math.round(n.km)+' km</span>';}).join('')+'</div>';
   if(!S.loc&&!S.st&&!S.d)h+='<div class="mv-card mv-empty">'+L('Choose a state and district, or tap "Use my current location" to see registered vendors near you.','राज्य और ज़िला चुनें, या "मेरी वर्तमान लोकेशन" दबाएं।','રાજ્ય અને જિલ્લો પસંદ કરો, અથવા "મારું વર્તમાન સ્થાન" દબાવો.')+'</div>';
   else if(!list.length)h+='<div class="mv-card mv-empty">'+L('No imported vendors here yet. Only Gujarat and Madhya Pradesh are imported so far.','यहाँ अभी कोई आयातित वेंडर नहीं। अभी केवल गुजरात और मध्य प्रदेश आयात हुए हैं।','અહીં હજી કોઈ આયાતિત વેન્ડર નથી. હાલ ફક્ત ગુજરાત અને મધ્ય પ્રદેશ આયાત થયા છે.')+'</div>';
-  else{h+='<p class="mv-note" style="margin:0 0 8px"><b>'+nf(list.length)+'</b> '+L('vendors found, best partners first','वेंडर मिले, सर्वश्रेष्ठ पार्टनर पहले','વેન્ડર મળ્યા, શ્રેષ્ઠ પાર્ટનર પહેલા')+'</p><div class="mv-grid g3">'+list.slice(0,S.lim).map(function(o){return vcard(o.v,o.d,o.km);}).join('')+'</div>';
+  else{h+=t5Find();h+='<p class="mv-note" style="margin:0 0 8px"><b>'+nf(list.length)+'</b> '+L('vendors found, best partners first','वेंडर मिले, सर्वश्रेष्ठ पार्टनर पहले','વેન્ડર મળ્યા, શ્રેષ્ઠ પાર્ટનર પહેલા')+'</p><div class="mv-grid g3">'+list.slice(0,S.lim).map(function(o){return vcard(o.v,o.d,o.km);}).join('')+'</div>';
     if(list.length>S.lim)h+='<div class="mv-more"><button class="mv-btn sec" id="mvMore" type="button">'+L('Show more','और दिखाएं','વધુ બતાવો')+'</button></div>';}
   mvBody.innerHTML=h;
   $('mvSt').onchange=function(){S.st=this.value;S.d='';S.loc=null;S.nearD=null;S.lim=24;render();};
@@ -5262,6 +5264,15 @@ function rMap(){
   $('mvRk').onchange=function(){S.rad=Math.max(10,Math.min(500,+this.value||50));rMap();};
 }
 
+function t5Find(){
+  if(!S.d)return '<div class="mv-card mv-t5card"><h2>★ '+L('Top 5 vendors','टॉप 5 वेंडर','ટોપ 5 વેન્ડર')+'</h2><p class="mv-note" style="margin:6px 0 0">'+L('Select a district above to see its top 5 MNRE vendors with rating and installations. You can also open the GIS Map tab.','ऊपर ज़िला चुनें और उसके टॉप 5 MNRE वेंडर रेटिंग और इंस्टॉलेशन के साथ देखें। GIS Map टैब भी खोल सकते हैं।','ઉપર જિલ્લો પસંદ કરો અને તેના ટોપ 5 MNRE વેન્ડર રેટિંગ અને ઇન્સ્ટોલેશન સાથે જુઓ. GIS Map ટેબ પણ ખોલી શકો છો.')+'</p></div>';
+  var dd=DS.filter(function(q){return q.d===S.d&&(!S.st||q.st===S.st);})[0];if(!dd||!dd.top||!dd.top.length)return '';
+  var tp=dd.top,rt=function(r){return r==null?'–':(Math.round(r*10)/10)+'/5';};
+  var h='<div class="mv-card mv-t5card"><h2>★ '+L('Top 5 vendors in','टॉप 5 वेंडर:','ટોપ 5 વેન્ડર:')+' '+esc(dd.d)+' <small>'+L('by installations','इंस्टॉलेशन के अनुसार','ઇન્સ્ટોલેશન મુજબ')+'</small></h2><div class="mv-t5chips">'+tp.map(function(t,i){return '<button type="button" class="mv-t5chip'+(S.fsel===i?' on':'')+'" data-a="fsel" data-i="'+i+'"><b>'+(i+1)+'</b><span class="n">'+esc(t.name)+'</span><span class="s">★ '+rt(t.r)+' · '+nf(t.ins)+' '+L('installs','इंस्टॉल','ઇન્સ્ટોલ')+'</span></button>';}).join('')+'</div>';
+  if(S.fsel>=0&&tp[S.fsel]){var T=tp[S.fsel];h+='<div class="mv-pincard"><div class="pt">📍 '+esc(T.name)+'</div><div class="pl">'+esc(dd.d)+', '+esc(stName(dd.st))+' <i>('+L('approx. district centre','अनुमानित ज़िला केंद्र','અંદાજિત જિલ્લા કેન્દ્ર')+')</i></div><div class="pr"><span><em>'+rt(T.r)+'</em> '+L('rating','रेटिंग','રેટિંગ')+(T.rc?' ('+nf(T.rc)+' '+L('reviews','रिव्यू','રિવ્યૂ')+')':'')+'</span><span><em>'+nf(T.ins)+'</em> '+L('installations','इंस्टॉलेशन','ઇન્સ્ટોલેશન')+'</span><span><em>'+nf(T.kw)+'</em> kWp</span></div>'+(T.brand?'<div class="pl">'+L('Brand','ब्रांड','બ્રાન્ડ')+': '+esc(T.brand)+'</div>':'')+'<div class="mv-row" style="margin-top:8px"><button class="mv-btn sm" data-a="t5map" data-s="'+esc(dd.st)+'" data-d="'+esc(dd.d)+'" data-i="'+S.fsel+'" type="button">🗺 '+L('Show on map','मैप पर दिखाएँ','નકશા પર બતાવો')+'</button></div></div>';}
+  return h+'</div>';
+}
+
 /* ================= LEADS ================= */
 function ROOF(){return [['rcc',L('RCC slab','आरसीसी छत','આરસીસી છત'),'RCC'],['sheet',L('Metal sheet','टीन शेड','પતરાં'),'Sheet'],['tile',L('Tiled','टाइल वाली','નળિયાં'),'Tile'],['other',L('Other','अन्य','અન્ય'),'Other']];}
 function routeLead(l){
@@ -5286,7 +5297,7 @@ function rLead(){
     if(!r)h+='<div class="mv-empty">'+L('No active vendor found within 200 km in the imported data.','आयातित डेटा में 200 km के भीतर कोई सक्रिय वेंडर नहीं मिला।','આયાતિત ડેટામાં 200 km ની અંદર કોઈ સક્રિય વેન્ડર મળ્યો નથી.')+'</div>';
     else{var items=[[L('Nearest vendor','सबसे नज़दीकी वेंडर','સૌથી નજીકનો વેન્ડર'),r.near],[L('Highest-rated vendor','सबसे ऊँची रेटिंग','સૌથી ઊંચું રેટિંગ'),r.top],[L('Most suitable vendor','सबसे उपयुक्त वेंडर','સૌથી યોગ્ય વેન્ડર'),r.fit]];
       h+='<div class="mv-grid g3">'+items.map(function(i){return '<div><p class="mv-note" style="margin:0 0 6px"><b>'+i[0]+'</b> · ≈'+Math.round(i[1].km)+' km</p>'+vcard(i[1].v,DM[l.st+'|'+l.d],i[1].km)+'</div>';}).join('')+'</div><p class="mv-note">'+L('Most suitable = 25% distance, 20% rating, 15% review volume (experience proxy), 15% projects, 15% capacity, 10% presence in your district. Only vendors with installs on the portal are considered.','सबसे उपयुक्त = 25% दूरी, 20% रेटिंग, 15% रिव्यू (अनुभव का संकेत), 15% प्रोजेक्ट, 15% क्षमता, 10% आपके ज़िले में उपस्थिति। केवल पोर्टल पर इंस्टॉल वाले वेंडर गिने गए।','સૌથી યોગ્ય = 25% અંતર, 20% રેટિંગ, 15% રિવ્યૂ (અનુભવ સંકેત), 15% પ્રોજેક્ટ, 15% ક્ષમતા, 10% તમારા જિલ્લામાં હાજરી. ફક્ત પોર્ટલ પર ઇન્સ્ટોલ ધરાવતા વેન્ડર ગણાયા.')+'</p>';}
-    h+='<div class="mv-row" style="margin-top:8px"><a class="mv-btn" style="background:#16A34A" target="_blank" rel="noopener" href="https://wa.me/?text='+encodeURIComponent(leadSummary(l.sum))+'">'+L('Share lead on WhatsApp','लीड WhatsApp पर भेजें','લીડ WhatsApp પર મોકલો')+'</a><button class="mv-btn sec" data-a="copylead" type="button">'+L('Copy lead','लीड कॉपी करें','લીડ કૉપી કરો')+'</button></div></div>';}
+    h+='<div class="mv-row" style="margin-top:8px"><a class="mv-btn" style="background:#16A34A" target="_blank" rel="noopener" href="https://wa.me/919879900179?text='+encodeURIComponent(leadSummary(l.sum))+'">'+L('Send quote request to VION on WhatsApp','कोटेशन अनुरोध VION को WhatsApp पर भेजें','કોટેશન વિનંતી VION ને WhatsApp પર મોકલો')+'</a><button class="mv-btn sec" data-a="copylead" type="button">'+L('Copy lead','लीड कॉपी करें','લીડ કૉપી કરો')+'</button></div></div>';}
   if(dist){h+='<div class="mv-card"><h2>'+L('Lead inbox','लीड इनबॉक्स','લીડ ઇનબૉક્સ')+' <small>'+S.leads.length+' '+L('on this device','इस डिवाइस पर','આ ડિવાઇસ પર')+'</small></h2>';
     if(!S.leads.length)h+='<div class="mv-empty">'+L('No leads yet.','अभी कोई लीड नहीं।','હજી કોઈ લીડ નથી.')+'</div>';
     else{h+='<div class="mv-tw"><table><thead><tr><th>'+L('Date','तारीख','તારીખ')+'</th><th>'+L('Name','नाम','નામ')+'</th><th>'+L('Mobile','मोबाइल','મોબાઇલ')+'</th><th>'+L('District','ज़िला','જિલ્લો')+'</th><th>'+L('Bill','बिल','બિલ')+'</th><th>'+L('Routed to','रूट','રૂટ')+'</th><th></th></tr></thead><tbody>'+S.leads.map(function(x,i){return '<tr><td>'+esc(new Date(x.ts).toLocaleDateString('en-IN'))+'</td><td>'+esc(x.name)+'</td><td>'+esc(x.mobile)+'</td><td>'+esc(x.d)+'</td><td>₹'+nf(x.bill)+'</td><td>'+esc(x.fit||'–')+'</td><td><button class="mv-btn sm sec" data-a="dellead" data-i="'+i+'" type="button">✕</button></td></tr>';}).join('')+'</tbody></table></div><div class="mv-row" style="margin-top:8px"><button class="mv-btn sec sm" data-a="leadcsv" type="button">⬇ CSV</button></div>';}
@@ -5338,9 +5349,9 @@ function openV(key){
 function closeV(){var m=$('mvModal');m.classList.remove('on');m.innerHTML='';}
 
 /* ================= SHELL ================= */
-var TABS=[['find',L('Find Nearby','नज़दीकी वेंडर','નજીકના વેન્ડર'),false,rFind],['dir',L('Directory','डायरेक्टरी','ડિરેક્ટરી'),false,rDir],['over',L('Overview','ओवरव्यू','ઓવરવ્યૂ'),true,rOver],['map',L('GIS Map','जीआईएस मैप','જીઆઇએસ મેપ'),true,rMap],['brand',L('Brands','ब्रांड','બ્રાન્ડ'),true,rBrand],['opp',L('Opportunity','अवसर','તક'),true,rOpp],['lead',L('Quote / Leads','कोटेशन / लीड','કોટેશન / લીડ'),false,rLead],['gov',L('Governance','गवर्नेंस','ગવર્નન્સ'),true,rGov]];
+var TABS=[['find',L('Find Nearby','नज़दीकी वेंडर','નજીકના વેન્ડર'),false,rFind],['dir',L('Directory','डायरेक्टरी','ડિરેક્ટરી'),false,rDir],['over',L('Overview','ओवरव्यू','ઓવરવ્યૂ'),true,rOver],['map',L('GIS Map','जीआईएस मैप','જીઆઇએસ મેપ'),false,rMap],['brand',L('Brands','ब्रांड','બ્રાન્ડ'),true,rBrand],['opp',L('Opportunity','अवसर','તક'),true,rOpp],['lead',L('Quote / Leads','कोटेशन / लीड','કોટેશન / લીડ'),false,rLead],['gov',L('Governance','गवर्नेंस','ગવર્નન્સ'),true,rGov]];
 function shell(){
-  TABS=[['find',L('Find Nearby','नज़दीकी वेंडर','નજીકના વેન્ડર'),false,rFind],['dir',L('Directory','डायरेक्टरी','ડિરેક્ટરી'),false,rDir],['over',L('Overview','ओवरव्यू','ઓવરવ્યૂ'),true,rOver],['map',L('GIS Map','जीआईएस मैप','જીઆઇએસ મેપ'),true,rMap],['brand',L('Brands','ब्रांड','બ્રાન્ડ'),true,rBrand],['opp',L('Opportunity','अवसर','તક'),true,rOpp],['lead',L('Quote / Leads','कोटेशन / लीड','કોટેશન / લીડ'),false,rLead],['gov',L('Governance','गवर्नेंस','ગવર્નન્સ'),true,rGov]];
+  TABS=[['find',L('Find Nearby','नज़दीकी वेंडर','નજીકના વેન્ડર'),false,rFind],['dir',L('Directory','डायरेक्टरी','ડિરેક્ટરી'),false,rDir],['over',L('Overview','ओवरव्यू','ઓવરવ્યૂ'),true,rOver],['map',L('GIS Map','जीआईएस मैप','જીઆઇએસ મેપ'),false,rMap],['brand',L('Brands','ब्रांड','બ્રાન્ડ'),true,rBrand],['opp',L('Opportunity','अवसर','તક'),true,rOpp],['lead',L('Quote / Leads','कोटेशन / लीड','કોટેશન / લીડ'),false,rLead],['gov',L('Governance','गवर्नेंस','ગવર્નન્સ'),true,rGov]];
   var f=fresh(DATA.imported);
   root.innerHTML='<section class="mv-hero"><small>'+L('MNRE · PM Surya Ghar','MNRE · पीएम सूर्य घर','MNRE · પીએમ સૂર્ય ઘર')+'</small><h1>'+L('MNRE Registered Vendors','MNRE रजिस्टर्ड वेंडर','MNRE રજિસ્ટર્ડ વેન્ડર')+'</h1><p>'+L('Find government-registered rooftop solar vendors near you, see who is strong in each district, and spot districts that need more partners.','अपने पास सरकार द्वारा रजिस्टर्ड रूफटॉप सोलर वेंडर खोजें, देखें कि हर ज़िले में कौन मज़बूत है, और जानें कि किन ज़िलों में और पार्टनर चाहिए।','તમારી નજીકના સરકાર-નોંધાયેલ રૂફટોપ સોલર વેન્ડર શોધો, દરેક જિલ્લામાં કોણ મજબૂત છે તે જુઓ, અને કયા જિલ્લામાં વધુ પાર્ટનર જોઈએ તે જાણો.')+'</p><div class="mv-chips"><a class="mv-chip" href="'+SRC_URL+'" target="_blank" rel="noopener">🏛 '+L('Official source: pmsuryaghar.gov.in','आधिकारिक स्रोत: pmsuryaghar.gov.in','સત્તાવાર સ્રોત: pmsuryaghar.gov.in')+'</a><span class="mv-chip"><span class="mv-dot '+f.c+'"></span>'+L('Imported','आयात','આયાત')+' '+esc(fdate(DATA.imported))+'</span><span class="mv-chip">✔ '+L('Public data only','केवल सार्वजनिक डेटा','ફક્ત જાહેર ડેટા')+'</span><span class="mv-chip">'+nf(V.length)+' '+L('vendors','वेंडर','વેન્ડર')+' · '+DS.length+' '+L('districts','ज़िले','જિલ્લા')+'</span></div></section><nav class="mv-nav" id="mvNav"></nav><div id="mvBody"></div><div class="mv-modal" id="mvModal"></div>';
   mvBody=$('mvBody');
@@ -5361,6 +5372,8 @@ root.addEventListener('click',function(e){
   else if(a==='nocontact'){alert(L('Phone numbers and e-mails are not imported (privacy review). Use "Profile", then "Contact via official portal", or the WhatsApp enquiry.','फोन और ईमेल आयात नहीं किए गए (गोपनीयता समीक्षा)। "प्रोफ़ाइल" में "आधिकारिक पोर्टल से संपर्क" या WhatsApp पूछताछ इस्तेमाल करें।','ફોન અને ઇમેઇલ આયાત થયા નથી (ગોપનીયતા સમીક્ષા). "પ્રોફાઇલ" માં "સત્તાવાર પોર્ટલ દ્વારા સંપર્ક" અથવા WhatsApp પૂછપરછ વાપરો.'));}
   else if(a==='st'){S.mst=el.dataset.s;S.lvl='state';S.md='';S.vsel=-1;rMap();}
   else if(a==='di'){S.mst=el.dataset.s;S.md=el.dataset.d;S.lvl='district';S.vsel=-1;rMap();}
+  else if(a==='fsel'){S.fsel=(S.fsel===+el.dataset.i)?-1:+el.dataset.i;render();}
+  else if(a==='t5map'){S.mst=el.dataset.s;S.md=el.dataset.d;S.lvl='district';S.vsel=+el.dataset.i;S.tab='map';render();}
   else if(a==='vsel'){S.vsel=(S.vsel===+el.dataset.i)?-1:+el.dataset.i;rMap();}
   else if(a==='lv'){S.vsel=-1;if(el.dataset.l==='india'){S.lvl='india';S.mst='';S.md='';}else{S.lvl='state';S.md='';}rMap();}
   else if(a==='mode'){S.mode=el.dataset.m;rMap();}
