@@ -4947,6 +4947,15 @@ body.vdark #tab-mnre .mv-pincard .pt,body.vdark #tab-mnre .mv-pincard .pr em{col
 body.vdark #tab-mnre .mv-t5chip.on{color:#1b1200}body.vdark #tab-mnre .mv-t5chip.on .s{color:#4a3a00}
 
 @media (max-width:520px){#tab-mnre .g3{grid-template-columns:minmax(0,1fr)}}
+
+/* Opportunity tab: premium green/orange blink */
+#tab-mnre #mvNav button[data-t=opp]{position:relative;overflow:hidden;color:#fff !important;font-weight:800;border:1px solid rgba(255,255,255,.65) !important;background:linear-gradient(120deg,#16A34A,#22C55E,#F59E0B,#F97316,#22C55E,#16A34A) !important;background-size:300% 100% !important;animation:mvOppBg 3.2s ease-in-out infinite,mvOppGlow 1.6s ease-in-out infinite;text-shadow:0 1px 2px rgba(0,0,0,.35)}
+#tab-mnre #mvNav button[data-t=opp]::after{content:"";position:absolute;top:0;left:-60%;width:45%;height:100%;background:linear-gradient(100deg,transparent,rgba(255,255,255,.75),transparent);transform:skewX(-20deg);animation:mvOppShine 2.4s ease-in-out infinite}
+#tab-mnre #mvNav button[data-t=opp]::before{content:"✦ ";font-size:.9em}
+@keyframes mvOppBg{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
+@keyframes mvOppGlow{0%,100%{box-shadow:0 0 6px rgba(34,197,94,.7),0 0 16px rgba(34,197,94,.45),inset 0 0 8px rgba(255,255,255,.25)}50%{box-shadow:0 0 8px rgba(249,115,22,.85),0 0 22px rgba(245,158,11,.6),inset 0 0 10px rgba(255,255,255,.3)}}
+@keyframes mvOppShine{0%{left:-60%}60%,100%{left:130%}}
+@media (prefers-reduced-motion:reduce){#tab-mnre #mvNav button[data-t=opp],#tab-mnre #mvNav button[data-t=opp]::after{animation:none}}
 </style>
 <script>
 /* MNRE REGISTERED VENDORS MODULE */
@@ -5349,9 +5358,9 @@ function openV(key){
 function closeV(){var m=$('mvModal');m.classList.remove('on');m.innerHTML='';}
 
 /* ================= SHELL ================= */
-var TABS=[['find',L('Find Nearby','नज़दीकी वेंडर','નજીકના વેન્ડર'),false,rFind],['dir',L('Directory','डायरेक्टरी','ડિરેક્ટરી'),false,rDir],['over',L('Overview','ओवरव्यू','ઓવરવ્યૂ'),true,rOver],['map',L('GIS Map','जीआईएस मैप','જીઆઇએસ મેપ'),false,rMap],['brand',L('Brands','ब्रांड','બ્રાન્ડ'),true,rBrand],['opp',L('Opportunity','अवसर','તક'),true,rOpp],['lead',L('Quote / Leads','कोटेशन / लीड','કોટેશન / લીડ'),false,rLead],['gov',L('Governance','गवर्नेंस','ગવર્નન્સ'),true,rGov]];
+var TABS=[['find',L('Find Nearby','नज़दीकी वेंडर','નજીકના વેન્ડર'),false,rFind],['dir',L('Directory','डायरेक्टरी','ડિરેક્ટરી'),false,rDir],['over',L('Overview','ओवरव्यू','ઓવરવ્યૂ'),true,rOver],['map',L('GIS Map','जीआईएस मैप','જીઆઇએસ મેપ'),false,rMap],['opp',L('Opportunity','अवसर','તક'),false,rOpp],['lead',L('Quote / Leads','कोटेशन / लीड','કોટેશન / લીડ'),false,rLead]];
 function shell(){
-  TABS=[['find',L('Find Nearby','नज़दीकी वेंडर','નજીકના વેન્ડર'),false,rFind],['dir',L('Directory','डायरेक्टरी','ડિરેક્ટરી'),false,rDir],['over',L('Overview','ओवरव्यू','ઓવરવ્યૂ'),true,rOver],['map',L('GIS Map','जीआईएस मैप','જીઆઇએસ મેપ'),false,rMap],['brand',L('Brands','ब्रांड','બ્રાન્ડ'),true,rBrand],['opp',L('Opportunity','अवसर','તક'),true,rOpp],['lead',L('Quote / Leads','कोटेशन / लीड','કોટેશન / લીડ'),false,rLead],['gov',L('Governance','गवर्नेंस','ગવર્નન્સ'),true,rGov]];
+  TABS=[['find',L('Find Nearby','नज़दीकी वेंडर','નજીકના વેન્ડર'),false,rFind],['dir',L('Directory','डायरेक्टरी','ડિરેક્ટરી'),false,rDir],['over',L('Overview','ओवरव्यू','ઓવરવ્યૂ'),true,rOver],['map',L('GIS Map','जीआईएस मैप','જીઆઇએસ મેપ'),false,rMap],['opp',L('Opportunity','अवसर','તક'),false,rOpp],['lead',L('Quote / Leads','कोटेशन / लीड','કોટેશન / લીડ'),false,rLead]];
   var f=fresh(DATA.imported);
   root.innerHTML='<section class="mv-hero"><small>'+L('MNRE · PM Surya Ghar','MNRE · पीएम सूर्य घर','MNRE · પીએમ સૂર્ય ઘર')+'</small><h1>'+L('MNRE Registered Vendors','MNRE रजिस्टर्ड वेंडर','MNRE રજિસ્ટર્ડ વેન્ડર')+'</h1><p>'+L('Find government-registered rooftop solar vendors near you, see who is strong in each district, and spot districts that need more partners.','अपने पास सरकार द्वारा रजिस्टर्ड रूफटॉप सोलर वेंडर खोजें, देखें कि हर ज़िले में कौन मज़बूत है, और जानें कि किन ज़िलों में और पार्टनर चाहिए।','તમારી નજીકના સરકાર-નોંધાયેલ રૂફટોપ સોલર વેન્ડર શોધો, દરેક જિલ્લામાં કોણ મજબૂત છે તે જુઓ, અને કયા જિલ્લામાં વધુ પાર્ટનર જોઈએ તે જાણો.')+'</p><div class="mv-chips"><a class="mv-chip" href="'+SRC_URL+'" target="_blank" rel="noopener">🏛 '+L('Official source: pmsuryaghar.gov.in','आधिकारिक स्रोत: pmsuryaghar.gov.in','સત્તાવાર સ્રોત: pmsuryaghar.gov.in')+'</a><span class="mv-chip"><span class="mv-dot '+f.c+'"></span>'+L('Imported','आयात','આયાત')+' '+esc(fdate(DATA.imported))+'</span><span class="mv-chip">✔ '+L('Public data only','केवल सार्वजनिक डेटा','ફક્ત જાહેર ડેટા')+'</span><span class="mv-chip">'+nf(V.length)+' '+L('vendors','वेंडर','વેન્ડર')+' · '+DS.length+' '+L('districts','ज़िले','જિલ્લા')+'</span></div></section><nav class="mv-nav" id="mvNav"></nav><div id="mvBody"></div><div class="mv-modal" id="mvModal"></div>';
   mvBody=$('mvBody');
