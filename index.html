@@ -5096,7 +5096,22 @@ function rDir(){
   var q=$('mvQ');q.oninput=function(){S.q=this.value;S.lim=24;clearTimeout(rDir.t);rDir.t=setTimeout(function(){var p=q.selectionStart;rDir();var n=$('mvQ');n.focus();try{n.setSelectionRange(p,p);}catch(e){}},250);};
   [['mvSt','st'],['mvDi','d'],['mvTy','typ'],['mvBr','brand'],['mvSs','status'],['mvSo','sort']].forEach(function(p){$(p[0]).onchange=function(){S[p[1]]=this.value;if(p[1]==='st')S.d='';S.lim=24;rDir();};});
   if($('mvMore'))$('mvMore').onclick=function(){S.lim+=24;rDir();};
-  $('mvCsv').onclick=function(){var rows=[['Rank','Vendor','Type','Solar company','Districts','Rating','Reviews','Installed kWp','Projects','Score','Category','Source','Import date']];list.forEach(function(v){rows.push([v.rank,v.name,v.typ,v.bn,v.dists.map(function(x){return x.d;}).join('; '),v.r==null?'':v.r,v.rc,v.kw,v.ins,v.score,v.tier.n,SRC_URL,DATA.imported]);});var csv=rows.map(function(r){return r.map(function(c){c=String(c==null?'':c);return /[",\n]/.test(c)?'"'+c.replace(/"/g,'""')+'"':c;}).join(',');}).join('\n');var a=document.createElement('a');a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv'}));a.download='vion-mnre-vendors-public-data.csv';document.body.appendChild(a);a.click();setTimeout(function(){a.remove();},500);};
+  $('mvCsv').onclick=function(){
+  var PH='919879900179';
+  var ov=document.createElement('div');ov.style.cssText='position:fixed;inset:0;z-index:99999;background:rgba(10,20,50,.55);display:flex;align-items:center;justify-content:center;padding:16px';
+  var bx=document.createElement('div');bx.style.cssText='background:#fff;color:#0f1b4d;border-radius:16px;padding:20px;max-width:380px;width:100%;font:14px/1.45 Inter,system-ui,sans-serif;box-shadow:0 20px 60px rgba(0,0,0,.35)';
+  ov.appendChild(bx);document.body.appendChild(ov);
+  var rid=String(1000+Math.floor(Math.random()*9000));
+  bx.innerHTML='<b style="font-size:16px">Request the vendor CSV</b><p style="margin:8px 0">The CSV is shared on approval by the VION admin. Enter your name and tap the button. WhatsApp opens with a ready request, and the admin will send the file once approved.</p><input class="n" placeholder="Your name / firm" maxlength="60" style="width:100%;box-sizing:border-box;padding:10px;border:1px solid #cfd6ea;border-radius:10px;margin-bottom:6px"><div class="m" style="min-height:18px;color:#c8102e;margin-bottom:6px"></div><div style="display:flex;gap:8px;justify-content:flex-end"><button type="button" class="c" style="padding:8px 14px;border-radius:10px;border:1px solid #cfd6ea;background:#fff">Cancel</button><button type="button" class="s" style="padding:8px 14px;border-radius:10px;border:0;background:#1fa855;color:#fff;font-weight:600">Request on WhatsApp</button></div>';
+  bx.querySelector('.c').onclick=function(){ov.remove();};
+  bx.querySelector('.s').onclick=function(){
+    var n=bx.querySelector('.n').value.trim();
+    if(!n){bx.querySelector('.m').textContent='Please enter your name.';return;}
+    var t='Please approve the VION MNRE vendor CSV. Request ID '+rid+'. From: '+n;
+    window.open('https://wa.me/'+PH+'?text='+encodeURIComponent(t),'_blank','noopener');
+    ov.remove();
+  };
+};
 }
 
 /* ================= OVERVIEW (executive) ================= */
