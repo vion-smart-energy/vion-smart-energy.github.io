@@ -4971,6 +4971,7 @@ body.vdark #tab-mnre .mv-t5chip.on{color:#1b1200}body.vdark #tab-mnre .mv-t5chip
 
 /* GTI/Hybrid/Off-Grid open only from the Solar tab */
 #tabToggle button[data-tab=gti],#tabToggle button[data-tab=hybrid],#tabToggle button[data-tab=offgrid]{display:none !important}
+#tab-mnre [data-a="opendir"]{display:none !important}
 </style>
 <script>
 /* MNRE REGISTERED VENDORS MODULE */
@@ -5373,9 +5374,9 @@ function openV(key){
 function closeV(){var m=$('mvModal');m.classList.remove('on');m.innerHTML='';}
 
 /* ================= SHELL ================= */
-var TABS=[['find',L('Find Nearby','नज़दीकी वेंडर','નજીકના વેન્ડર'),false,rFind],['dir',L('Directory','डायरेक्टरी','ડિરેક્ટરી'),false,rDir],['over',L('Overview','ओवरव्यू','ઓવરવ્યૂ'),true,rOver],['map',L('GIS Map','जीआईएस मैप','જીઆઇએસ મેપ'),false,rMap],['opp',L('Opportunity','अवसर','તક'),false,rOpp],['lead',L('Quote / Leads','कोटेशन / लीड','કોટેશન / લીડ'),false,rLead]];
+var TABS=[['find',L('Find Nearby','नज़दीकी वेंडर','નજીકના વેન્ડર'),false,rFind],['map',L('GIS Map','जीआईएस मैप','જીઆઇએસ મેપ'),false,rMap],['opp',L('Opportunity','अवसर','તક'),false,rOpp],['lead',L('Quote / Leads','कोटेशन / लीड','કોટેશન / લીડ'),false,rLead]];
 function shell(){
-  TABS=[['find',L('Find Nearby','नज़दीकी वेंडर','નજીકના વેન્ડર'),false,rFind],['dir',L('Directory','डायरेक्टरी','ડિરેક્ટરી'),false,rDir],['over',L('Overview','ओवरव्यू','ઓવરવ્યૂ'),true,rOver],['map',L('GIS Map','जीआईएस मैप','જીઆઇએસ મેપ'),false,rMap],['opp',L('Opportunity','अवसर','તક'),false,rOpp],['lead',L('Quote / Leads','कोटेशन / लीड','કોટેશન / લીડ'),false,rLead]];
+  TABS=[['find',L('Find Nearby','नज़दीकी वेंडर','નજીકના વેન્ડર'),false,rFind],['map',L('GIS Map','जीआईएस मैप','જીઆઇએસ મેપ'),false,rMap],['opp',L('Opportunity','अवसर','તક'),false,rOpp],['lead',L('Quote / Leads','कोटेशन / लीड','કોટેશન / લીડ'),false,rLead]];
   var f=fresh(DATA.imported);
   root.innerHTML='<section class="mv-hero"><small>'+L('MNRE · PM Surya Ghar','MNRE · पीएम सूर्य घर','MNRE · પીએમ સૂર્ય ઘર')+'</small><h1>'+L('MNRE Registered Vendors','MNRE रजिस्टर्ड वेंडर','MNRE રજિસ્ટર્ડ વેન્ડર')+'</h1><p>'+L('Find government-registered rooftop solar vendors near you, see who is strong in each district, and spot districts that need more partners.','अपने पास सरकार द्वारा रजिस्टर्ड रूफटॉप सोलर वेंडर खोजें, देखें कि हर ज़िले में कौन मज़बूत है, और जानें कि किन ज़िलों में और पार्टनर चाहिए।','તમારી નજીકના સરકાર-નોંધાયેલ રૂફટોપ સોલર વેન્ડર શોધો, દરેક જિલ્લામાં કોણ મજબૂત છે તે જુઓ, અને કયા જિલ્લામાં વધુ પાર્ટનર જોઈએ તે જાણો.')+'</p><div class="mv-chips"><a class="mv-chip" href="'+SRC_URL+'" target="_blank" rel="noopener">🏛 '+L('Official source: pmsuryaghar.gov.in','आधिकारिक स्रोत: pmsuryaghar.gov.in','સત્તાવાર સ્રોત: pmsuryaghar.gov.in')+'</a><span class="mv-chip"><span class="mv-dot '+f.c+'"></span>'+L('Imported','आयात','આયાત')+' '+esc(fdate(DATA.imported))+'</span><span class="mv-chip">✔ '+L('Public data only','केवल सार्वजनिक डेटा','ફક્ત જાહેર ડેટા')+'</span><span class="mv-chip">'+nf(V.length)+' '+L('vendors','वेंडर','વેન્ડર')+' · '+DS.length+' '+L('districts','ज़िले','જિલ્લા')+'</span></div></section><nav class="mv-nav" id="mvNav"></nav><div id="mvBody"></div><div class="mv-modal" id="mvModal"></div>';
   mvBody=$('mvBody');
