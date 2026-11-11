@@ -3795,6 +3795,7 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
     var t='*VION Smart Energy Hub*\n'+(c.title||'Your Solution')+' ('+(document.querySelector('#tabToggle button.active')||{}).textContent.trim()+')\n\n*'+c.prod.trim()+'*\n';
     if(c.alt.trim())t+=c.alt.trim()+'\n';
     c.m.forEach(function(x){t+='• '+x.label+': '+x.val+'\n';});
+    try{var mr=window.vionCatalog&&window.vionCatalog.mrpFor(c.prod);if(mr)t+='• MRP (incl. GST, indicative): '+mr+'\n';}catch(e){}
     return t+'\nOpen this calculation: '+link();
   }
   // ---- buttons on each answer card ----
@@ -5499,6 +5500,26 @@ body.vglass #tab-cat .cc-card,body.vglass #tab-cat .cc-box,body.vglass #tab-cat 
 body.vglass.vdark #tab-cat .cc-card,body.vglass.vdark #tab-cat .cc-box,body.vglass.vdark #tab-cat .cc-chs,body.vglass.vdark #tab-cat .cc-s{background:rgba(17,26,62,.72)}
 #tabToggle button.cat{position:relative}
 @media (max-width:520px){#tab-cat .cc-grid{grid-template-columns:1fr}#tab-cat .cc-hero{padding:18px}}
+
+#tab-cat .cc-sel{min-height:44px;padding:0 10px;border:1px solid var(--cl);border-radius:14px;background:var(--cc);color:var(--ct);font:600 13px 'Inter',sans-serif}
+#tab-cat .cc-pd{margin:-6px 0 12px;font-size:12px;color:var(--cm);font-weight:600}
+#tab-cat .cc-ac{display:flex;gap:8px;align-items:center;margin-top:auto;flex-wrap:wrap}
+#tab-cat .cc-ac .cc-q{margin-top:0;flex:1;min-width:84px}
+#tab-cat .cc-ac .cc-sh{background:#1E3FAE}
+#tab-cat .cc-cmp{display:flex;align-items:center;gap:6px;min-height:44px;padding:0 10px;border:1px solid var(--cl);border-radius:12px;font:700 12.5px 'Inter',sans-serif;color:var(--ct);cursor:pointer}
+#tab-cat .cc-cmp input{width:18px;height:18px}
+#tab-cat .cc-cb{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:60;display:flex;gap:8px;align-items:center;background:#0F1B4C;color:#fff;border-radius:16px;padding:8px 10px 8px 16px;box-shadow:0 14px 34px -10px rgba(0,0,0,.5);font:700 13px 'Inter',sans-serif}
+#tab-cat .cc-cb[hidden]{display:none}
+#tab-cat .cc-cb button{min-height:40px;padding:0 14px;border:0;border-radius:11px;background:#F5B301;color:#1b1200;font:800 13px 'Inter',sans-serif;cursor:pointer}
+#tab-cat .cc-cb button[disabled]{opacity:.45}
+#tab-cat .cc-cb button.cc-g{background:rgba(255,255,255,.16);color:#fff}
+#tab-cat .cc-md{position:fixed;inset:0;z-index:80;background:rgba(8,14,40,.62);display:flex;align-items:center;justify-content:center;padding:14px}
+#tab-cat .cc-mb{position:relative;background:var(--cc);color:var(--ct);border-radius:20px;padding:18px;max-width:900px;width:100%;max-height:88vh;overflow:auto}
+#tab-cat .cc-x{position:absolute;right:10px;top:8px;width:44px;height:44px;border:0;background:transparent;color:var(--ct);font-size:28px;cursor:pointer}
+body.vcat .vtip,body.vcat .vtip-bd,body.vcat [class*=vtip]{display:none !important}
+#tab-cat .cc-cb span{white-space:nowrap;flex:1}
+@media (max-width:520px){#tab-cat .cc-cb{left:12px;right:12px;transform:none;bottom:calc(76px + env(safe-area-inset-bottom,0px))}#tab-cat .cc-cb button{white-space:nowrap}}
+@media (max-width:520px){#tab-cat .cc-cb{left:70px;right:10px;bottom:calc(16px + env(safe-area-inset-bottom,0px));padding:6px 8px 6px 12px;font-size:12.5px}#tab-cat .cc-cb button{padding:0 10px;font-size:12.5px}}
 /* ===== VION GLASS THEME (optional; body.vglass) ===== */
 body.vglass{--g-blur:blur(18px) saturate(160%);--g-bd:rgba(255,255,255,.72);--g-in:inset 0 1px 0 rgba(255,255,255,.85);--g-sh:0 14px 40px -18px rgba(20,40,110,.38)}
 body.vglass:not(.vdark){background:
@@ -5630,10 +5651,27 @@ var P=[
  sp:[['Cell','LFP, 314 Ah, 3.2 V DC'],['Configuration','1P52S × 5S'],['Nominal voltage','832 V DC (715–936 V)'],['Nominal energy','261.248 kWh'],['Rated C-rate','0.5 CP'],['Rated AC voltage / power','400 V AC / 125 kW (max 137.5 kW)'],['Grid frequency','50–60 Hz'],['Weight','2650 Kg'],['Dimensions (W×D×H)','1450 × 1330 × 2150 mm'],['Working temp','−30 to +50 °C (derate above 45 °C)'],['IP / corrosivity','IP55 / C4 (up to C5 available)'],['Cooling','Liquid cooling'],['BMS','5 × BMU + 1 × BCMU'],['Compliances','IEC 62619; UN38.3; EN IEC 62477-1; EN IEC 61000-6-2/4']]}
 ];
 var root=document.getElementById('tab-cat');if(!root)return;
-var st={c:'all',q:'',open:{}};
+var st={c:'all',q:'',open:{},sort:'def',volt:'all',cmp:[]};
+P.forEach(function(p){var m=/^([\d.]+)V\s*([\d.]+)?/.exec(p.cap);p.v=m?parseFloat(m[1]):0;p.ah=m&&m[2]?parseFloat(m[2]):0;
+  var ee=/([\d.]+)\s*kWh/.exec(p.cap);p.wh=p.v&&p.ah?p.v*p.ah:(ee?parseFloat(ee[1])*1000:0);
+  p.vg=p.v>=800?'hv':p.v>=60?'64':p.v>=50?'51':p.v>=24?'24':p.v>=12?'12':'0';});
 function inr(n){return n==null?null:'₹'+Number(n).toLocaleString('en-IN');}
 function esc(s){return String(s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
 function wa(p){return 'https://wa.me/'+WA+'?text='+encodeURIComponent('Hello VION, I need price and availability for '+p.name+' ('+p.cap+').');}
+function share(p){
+  var t='*'+p.name+'* ('+p.cap+')\n'+p.wt+' warranty\n'+(p.mrp?'MRP (incl. GST): '+inr(p.mrp)+'\n':'')+p.hi.slice(0,3).map(function(h){return '• '+h;}).join('\n')+'\n\nVION Smart Energy Hub: https://vion-smart-energy.github.io/';
+  return 'https://wa.me/?text='+encodeURIComponent(t);
+}
+function spv(p,re){for(var i=0;i<p.sp.length;i++)if(re.test(p.sp[i][0]))return p.sp[i][1];return '—';}
+function cmpHtml(){
+  var L=st.cmp.map(function(id){return P.filter(function(p){return p.id===id;})[0];}).filter(Boolean);
+  var rows=[['Capacity',function(p){return p.cap;}],['MRP (incl. GST)',function(p){return inr(p.mrp)||'On request';}],['Dealer Price',function(p){return inr(p.dp)||'Not in list';},1],['Warranty',function(p){return p.wt;}],['Nominal energy',function(p){return spv(p,/Nominal energy/);}],['Standard charge / discharge',function(p){return spv(p,/Standard charge|Continuous charge/);}],['Backup @ 400 W',function(p){return spv(p,/Backup/);}],['Weight',function(p){return spv(p,/^(Battery )?weight/i);}],['Dimensions',function(p){return spv(p,/Dimensions/);}],['IP rating',function(p){return spv(p,/IP/);}]];
+  return '<div class="cc-md" role="dialog" aria-label="Compare products"><div class="cc-mb"><button class="cc-x" data-x="1" aria-label="Close">×</button><h2>Compare products</h2><div class="cc-tw"><table class="cc-tb"><thead><tr><th></th>'+L.map(function(p){return '<th>'+esc(p.name)+'</th>';}).join('')+'</tr></thead><tbody>'+rows.map(function(r){return '<tr'+(r[2]?' class="dp"':'')+'><td><b>'+r[0]+'</b></td>'+L.map(function(p){return '<td>'+esc(r[1](p))+'</td>';}).join('')+'</tr>';}).join('')+'</tbody></table></div></div></div>';
+}
+function cmpBar(){
+  var b=root.querySelector('.cc-cb');var n=st.cmp.length;b.hidden=!n;
+  b.querySelector('span').textContent=n+' of 3 selected';b.querySelector('[data-go]').disabled=n<2;
+}
 function card(p){
   var img=p.img?'<img src="'+IMG[p.img]+'" alt="'+esc(p.name)+'" loading="lazy">':'<div class="cc-noimg"><svg viewBox="0 0 24 24" width="46" height="46" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7" width="15" height="10" rx="2"/><path d="M21 11v2M7 10v4M11 10v4"/></svg></div>';
   var mrp=inr(p.mrp),dp=inr(p.dp);
@@ -5645,11 +5683,15 @@ function card(p){
    '<div class="cc-bd"><h3>'+esc(p.name)+'</h3><p class="cc-sub">'+esc(p.sub)+'</p><div class="cc-cap">'+esc(p.cap)+'</div>'+pr+save+
    '<ul class="cc-hi">'+p.hi.map(function(h){return '<li>'+esc(h)+'</li>';}).join('')+'</ul>'+
    '<details class="cc-sp"'+(st.open[p.id]?' open':'')+' data-id="'+p.id+'"><summary>Full specifications</summary><table>'+rows+'</table></details>'+
-   '<a class="cc-q" href="'+wa(p)+'" target="_blank" rel="noopener">Ask VION on WhatsApp</a></div></article>';
+   '<div class="cc-ac"><a class="cc-q" href="'+wa(p)+'" target="_blank" rel="noopener">Ask VION</a><a class="cc-q cc-sh" href="'+share(p)+'" target="_blank" rel="noopener">Share</a><label class="cc-cmp"><input type="checkbox" data-cmp="'+p.id+'"'+(st.cmp.indexOf(p.id)>-1?' checked':'')+'> Compare</label></div></div></article>';
 }
 function list(){
   var q=st.q.toLowerCase();
-  return P.filter(function(p){return (st.c==='all'||p.cat===st.c)&&(!q||(p.name+' '+p.cap+' '+p.sub).toLowerCase().indexOf(q)>-1);});
+  var r=P.filter(function(p){return (st.c==='all'||p.cat===st.c)&&(st.volt==='all'||p.vg===st.volt)&&(!q||(p.name+' '+p.cap+' '+p.sub).toLowerCase().indexOf(q)>-1);});
+  if(st.sort==='lo')r=r.slice().sort(function(a,b){return (a.mrp==null)-(b.mrp==null)||a.mrp-b.mrp;});
+  else if(st.sort==='hi')r=r.slice().sort(function(a,b){return (a.mrp==null)-(b.mrp==null)||b.mrp-a.mrp;});
+  else if(st.sort==='cap')r=r.slice().sort(function(a,b){return a.wh-b.wh;});
+  return r;
 }
 function table(){
   return '<div class="cc-tw"><table class="cc-tb"><thead><tr><th>Category</th><th>Model</th><th>Capacity</th><th>Warranty</th><th class="dp r">Dealer Price</th><th class="r">MRP</th></tr></thead><tbody>'+
@@ -5667,8 +5709,8 @@ function draw(){
 function build(){
   root.innerHTML='<div class="cc-hero"><small>PowerHive · VION</small><h1>Product Catalogue</h1><p>All VION batteries and integrated systems with specifications, photos and the October 2026 price lists. All prices include GST.</p>'+
   '<div class="cc-chips"><span>Life on. Power on.</span><span>'+P.length+' products</span><span>Oct 2026 prices</span></div></div>'+
-  '<div class="cc-bar"><div class="cc-chs">'+CATS.map(function(c){return '<button class="cc-chip" data-c="'+c[0]+'">'+c[1]+'</button>';}).join('')+'</div><input class="cc-s" type="search" placeholder="Search model or capacity" aria-label="Search products"><span class="cc-count"></span></div>'+
-  '<div class="cc-grid"></div>'+
+  '<div class="cc-bar"><div class="cc-chs">'+CATS.map(function(c){return '<button class="cc-chip" data-c="'+c[0]+'">'+c[1]+'</button>';}).join('')+'</div><input class="cc-s" type="search" placeholder="Search model or capacity" aria-label="Search products"><select class="cc-sel" id="ccVolt" aria-label="Voltage"><option value="all">All voltages</option><option value="12">12V</option><option value="24">24V</option><option value="51">51V</option><option value="64">64V</option><option value="hv">High voltage</option></select><select class="cc-sel" id="ccSort" aria-label="Sort"><option value="def">Sort: Featured</option><option value="lo">Price: low to high</option><option value="hi">Price: high to low</option><option value="cap">Capacity: small to large</option></select><span class="cc-count"></span></div><div class="cc-pd">Price list: October 2026 · all prices include GST · subject to change without notice</div>'+
+  '<div class="cc-grid"></div><div class="cc-cb" hidden><span></span><button data-go="1">Compare now</button><button data-clr="1" class="cc-g">Clear</button></div><div class="cc-mh"></div>'+
   '<div class="cc-box"><h2>All models at a glance</h2>'+table()+'<p class="cc-n">Dealer Price is for distributors and dealers. Channel partners should not resell above MRP. Prices are subject to change without notice and to stock availability. Warranties follow the company terms and conditions.</p></div>'+
   cmp(CMP,'VION LFP (12.8V 100Ah)','Lead acid (12V 160Ah)','Why choose lithium: Home UPS and inverter')+
   cmp(CMPE,'VION lithium eRickshaw','Lead acid eRickshaw','Why choose lithium: eRickshaw')+
@@ -5676,12 +5718,25 @@ function build(){
   root.querySelector('.cc-chs').addEventListener('click',function(e){var b=e.target.closest('.cc-chip');if(!b)return;st.c=b.dataset.c;draw();});
   root.querySelector('.cc-s').addEventListener('input',function(e){st.q=e.target.value.trim();draw();});
   root.querySelector('.cc-grid').addEventListener('toggle',function(e){var d=e.target;if(d&&d.dataset&&d.dataset.id)st.open[d.dataset.id]=d.open;},true);
-  draw();
+  root.querySelector('#ccVolt').addEventListener('change',function(e){st.volt=e.target.value;draw();});
+  root.querySelector('#ccSort').addEventListener('change',function(e){st.sort=e.target.value;draw();});
+  root.querySelector('.cc-grid').addEventListener('change',function(e){var id=e.target.getAttribute('data-cmp');if(!id)return;var i=st.cmp.indexOf(id);
+    if(e.target.checked){if(st.cmp.length>=3){e.target.checked=false;return;}if(i<0)st.cmp.push(id);}else if(i>-1)st.cmp.splice(i,1);cmpBar();});
+  root.querySelector('.cc-cb').addEventListener('click',function(e){
+    if(e.target.dataset.clr){st.cmp=[];root.querySelectorAll('[data-cmp]').forEach(function(c){c.checked=false;});cmpBar();}
+    if(e.target.dataset.go&&st.cmp.length>1){root.querySelector('.cc-mh').innerHTML=cmpHtml();}});
+  root.querySelector('.cc-mh').addEventListener('click',function(e){if(e.target.dataset.x||e.target.classList.contains('cc-md'))this.innerHTML='';});
+  draw();cmpBar();
 }
 var built=false;
 function show(on){root.classList.toggle('hidden',!on);document.body.classList.toggle('vcat',on);if(on&&!built){built=true;build();}}
 document.querySelectorAll('#tabToggle button').forEach(function(b){b.addEventListener('click',function(){show(b.dataset.tab==='cat');});});
-window.vionCatalog={open:function(){var b=document.querySelector('#tabToggle button[data-tab="cat"]');if(b)b.click();},products:P};
+function mrpFor(txt){
+  txt=String(txt||'');var best=null;P.forEach(function(p){if(p.mrp&&txt.indexOf(p.name)>-1&&(!best||p.name.length>best.name.length))best=p;});
+  if(!best)return '';var m=/(\d+)\s*[×x]\s*/.exec(txt),q=m?parseInt(m[1],10):1;
+  return q>1?inr(best.mrp)+' × '+q+' = '+inr(best.mrp*q):inr(best.mrp);
+}
+window.vionCatalog={mrpFor:mrpFor,open:function(){var b=document.querySelector('#tabToggle button[data-tab="cat"]');if(b)b.click();},products:P};
 })();
 
 </script>
