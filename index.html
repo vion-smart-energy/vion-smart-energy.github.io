@@ -5521,6 +5521,12 @@ body.vcat .vtip,body.vcat .vtip-bd,body.vcat [class*=vtip]{display:none !importa
 #tab-cat .cc-cb span{white-space:nowrap;flex:1}
 @media (max-width:520px){#tab-cat .cc-cb{left:12px;right:12px;transform:none;bottom:calc(76px + env(safe-area-inset-bottom,0px))}#tab-cat .cc-cb button{white-space:nowrap}}
 @media (max-width:520px){#tab-cat .cc-cb{left:70px;right:10px;bottom:calc(16px + env(safe-area-inset-bottom,0px));padding:6px 8px 6px 12px;font-size:12.5px}#tab-cat .cc-cb button{padding:0 10px;font-size:12.5px}}
+
+#tab-cat .cc-mu{font-size:11.5px;color:var(--cm);font-weight:600}
+#tab-cat .cc-sup{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px}
+#tab-cat .cc-sup a{display:block;background:var(--cs);border-radius:14px;padding:12px 14px;text-decoration:none;color:var(--ct);min-height:44px}
+#tab-cat .cc-sup small{display:block;font-size:11px;color:var(--cm);font-weight:700;text-transform:uppercase;letter-spacing:.06em}
+#tab-cat .cc-sup b{font:800 15px 'Poppins','Inter',sans-serif;word-break:break-word}
 /* ===== VION GLASS THEME (optional; body.vglass) ===== */
 body.vglass{--g-blur:blur(18px) saturate(160%);--g-bd:rgba(255,255,255,.72);--g-in:inset 0 1px 0 rgba(255,255,255,.85);--g-sh:0 14px 40px -18px rgba(20,40,110,.38)}
 body.vglass:not(.vdark){background:
@@ -5651,6 +5657,16 @@ var P=[
  hi:['Liquid cooling, IP55 outdoor','On-grid + off-grid','Fire suppression system','LFP 314 Ah cells'],
  sp:[['Cell','LFP, 314 Ah, 3.2 V DC'],['Configuration','1P52S × 5S'],['Nominal voltage','832 V DC (715–936 V)'],['Nominal energy','261.248 kWh'],['Rated C-rate','0.5 CP'],['Rated AC voltage / power','400 V AC / 125 kW (max 137.5 kW)'],['Grid frequency','50–60 Hz'],['Weight','2650 Kg'],['Dimensions (W×D×H)','1450 × 1330 × 2150 mm'],['Working temp','−30 to +50 °C (derate above 45 °C)'],['IP / corrosivity','IP55 / C4 (up to C5 available)'],['Cooling','Liquid cooling'],['BMS','5 × BMU + 1 × BCMU'],['Compliances','IEC 62619; UN38.3; EN IEC 62477-1; EN IEC 61000-6-2/4']]}
 ];
+var BK=[
+['VION LFP 12160','12.8V 100Ah',1280,[1,4,2,1,2,1,0,0],336,'3 hrs 40 min',['12160']],
+['VION LFP 12320','12.8V 200Ah',2560,[1,4,5,2,2,1,1,0],721,'3 hrs 30 min',['12320']],
+['VION LFP 25160','25.6V 100Ah',2560,[1,4,5,2,2,1,1,0],721,'3 hrs 30 min',['25160']],
+['VION LFP S 51105 (W/T)','51.2V',5376,[1,3,3,2,2,1,0,1],1622,'3 hrs 18 min',['51105w','51105s']],
+['VION LFP S 51206','51.2V 206Ah',10547,[1,5,9,4,3,1,1,2],3385,'3 hrs',['51206f']],
+['VION LFP S 51314','51.2V 314Ah',16076,[1,6,10,5,3,1,1,2],3489,'4 hrs 30 min',['51314f']],
+['VION Integrated PowerStack 1 KVA','12.8V 100Ah',1280,[1,4,2,1,2,1,0,0],336,'3 hrs 40 min',['ps1']],
+['VION Integrated PowerStack 2 KVA','25.6V 100Ah',2560,[1,4,5,3,2,1,1,0],796,'3 hrs 05 min',['ps2']]];
+BK.forEach(function(r){P.forEach(function(p){if(r[6].indexOf(p.id)>-1)p.hi.unshift('Backup example: '+r[4]+' W load runs about '+r[5]);});});
 var root=document.getElementById('tab-cat');if(!root)return;
 var st={c:'all',q:'',open:{},sort:'def',volt:'all',cmp:[]};
 P.forEach(function(p){var m=/^([\d.]+)V\s*([\d.]+)?/.exec(p.cap);p.v=m?parseFloat(m[1]):0;p.ah=m&&m[2]?parseFloat(m[2]):0;
@@ -5700,6 +5716,13 @@ function table(){
 }
 var CMP=[['Battery type','LiFePO₄ (Lithium Ferro Phosphate)','Tubular lead acid'],['Usable capacity','~95–100 Ah (up to 97% DOD)','~80–90 Ah (50–60% DOD)'],['Cycle life','3000+ cycles','~600–800 cycles'],['Charging time','3–4 hours @30A','12–15 hours'],['Weight','~12–13 Kg','~55–60 Kg'],['Efficiency','90–97%','60–75%'],['Self-discharge','<1–2% per month','4–5% per month'],['Maintenance','Zero maintenance','Regular maintenance'],['Safety','In-built BMS, no leakage','Risk of acid spill, gas emission']];
 var CMPE=[['Batteries needed','1 battery','4 batteries'],['Battery weight','42 Kg','120 Kg (30 Kg × 4)'],['Charging time','~4.0–4.5 hours','~10–12 hours'],['Warranty','3 years / 36 months','12–15 months on average'],['Water top-up','Not required','De-mineralised water every 2–3 weeks'],['Self-discharge','Lower','Faster']];
+function bkTable(){
+  var H=['LED TV<br>125W','LED bulb<br>9W','LED light<br>20W','Fan<br>75W','CCTV<br>25W','Wi-Fi router<br>10W','Fridge<br>250W','AC 1 Ton<br>1200W'];
+  return '<div class="cc-box"><h2>Backup selection chart</h2><p class="cc-n" style="margin:0 0 10px">Recommended appliance combinations, with the estimated backup in hours and minutes. The numbers are the count of each appliance.</p><div class="cc-tw"><table class="cc-tb"><thead><tr><th>Model</th><th class="r">Nominal energy (Wh)</th>'+H.map(function(h){return '<th class="r">'+h+'</th>';}).join('')+'<th class="r">Total load (W)</th><th>Estimated backup</th></tr></thead><tbody>'+
+  BK.map(function(r){return '<tr><td><b>'+esc(r[0])+'</b><br><span class="cc-mu">'+esc(r[1])+'</span></td><td class="r">'+r[2].toLocaleString('en-IN')+'</td>'+r[3].map(function(n){return '<td class="r">'+n+'</td>';}).join('')+'<td class="r"><b>'+r[4].toLocaleString('en-IN')+'</b></td><td>'+r[5]+' (approx.)</td></tr>';}).join('')+'</tbody></table></div>'+
+  '<p class="cc-n">Estimated backup may reduce by about 3–5% each year due to normal battery ageing. For the best battery life, size the load at about 50% of the battery\'s rated power during normal operation. Source: VSL PowerHive Backup Selection Chart. The 51105 row is printed with 5,376 Wh, which is a 105Ah pack.</p></div>';
+}
+function support(){return '<div class="cc-box"><h2>Customer support: doorstep service</h2><div class="cc-sup"><a href="tel:18001201100"><small>Toll free</small><b>1800 120 1100</b></a><a href="https://wa.me/919147762111" target="_blank" rel="noopener"><small>WhatsApp chatbot</small><b>91477 62111</b></a><a href="mailto:service@vslpowerhive.com"><small>Support email</small><b>service@vslpowerhive.com</b></a><a href="https://www.vslpowerhive.com" target="_blank" rel="noopener"><small>Website</small><b>www.vslpowerhive.com</b></a></div></div>';}
 function cmp(t,a,b,ttl){return '<div class="cc-box"><h2>'+ttl+'</h2><div class="cc-tw"><table class="cc-tb"><thead><tr><th></th><th>'+a+'</th><th>'+b+'</th></tr></thead><tbody>'+t.map(function(r){return '<tr><td><b>'+r[0]+'</b></td><td>'+r[1]+'</td><td>'+r[2]+'</td></tr>';}).join('')+'</tbody></table></div></div>';}
 function draw(){
   var l=list();
@@ -5713,9 +5736,9 @@ function build(){
   '<div class="cc-bar"><div class="cc-chs">'+CATS.map(function(c){return '<button class="cc-chip" data-c="'+c[0]+'">'+c[1]+'</button>';}).join('')+'</div><input class="cc-s" type="search" placeholder="Search model or capacity" aria-label="Search products"><select class="cc-sel" id="ccVolt" aria-label="Voltage"><option value="all">All voltages</option><option value="12">12V</option><option value="24">24V</option><option value="51">51V</option><option value="64">64V</option><option value="hv">High voltage</option></select><select class="cc-sel" id="ccSort" aria-label="Sort"><option value="def">Sort: Featured</option><option value="lo">Price: low to high</option><option value="hi">Price: high to low</option><option value="cap">Capacity: small to large</option></select><span class="cc-count"></span></div><div class="cc-pd">Price list: October 2026 · all prices include GST · subject to change without notice</div>'+
   '<div class="cc-grid"></div><div class="cc-cb" hidden><span></span><button data-go="1">Compare now</button><button data-clr="1" class="cc-g">Clear</button></div><div class="cc-mh"></div>'+
   '<div class="cc-box"><h2>All models at a glance</h2>'+table()+'<p class="cc-n">Channel partners should not resell above MRP. Prices are subject to change without notice and to stock availability. Warranties follow the company terms and conditions.</p></div>'+
-  cmp(CMP,'VION LFP (12.8V 100Ah)','Lead acid (12V 160Ah)','Why choose lithium: Home UPS and inverter')+
+  bkTable()+cmp(CMP,'VION LFP (12.8V 100Ah)','Lead acid (12V 160Ah)','Why choose lithium: Home UPS and inverter')+
   cmp(CMPE,'VION lithium eRickshaw','Lead acid eRickshaw','Why choose lithium: eRickshaw')+
-  '<div class="cc-box cc-src"><h2>Notes and sources</h2><ul><li>Specifications, photos and comparison tables: PowerHive VION Product Catalogue.</li><li>MRP: VION MRP Price List, October 2026.</li><li>VION LFP 12240 (12.8V 150Ah) and VION LFP EK 64105 (64V 105Ah) are in the price lists but have no spec sheet in the catalogue or on the PowerHive website. Their cards show only the figures that are certain or calculated, and a representative photo of the same series. Confirm the full sheet with VION.</li><li>The ERK charger and P261 have no MRP in the price list.</li><li>51206 (F) and 51314 (F) are priced as 200Ah and 300Ah; their spec sheet shows 206Ah and 314Ah.</li></ul></div>';
+  support()+'<div class="cc-box cc-src"><h2>Notes and sources</h2><ul><li>Specifications, photos and comparison tables: PowerHive VION Product Catalogue. Backup chart and support details: VSL PowerHive Backup Selection Chart.</li><li>MRP: VION MRP Price List, October 2026.</li><li>VION LFP 12240 (12.8V 150Ah) and VION LFP EK 64105 (64V 105Ah) are in the price lists but have no spec sheet in the catalogue or on the PowerHive website. Their cards show only the figures that are certain or calculated, and a representative photo of the same series. Confirm the full sheet with VION.</li><li>The ERK charger and P261 have no MRP in the price list.</li><li>51206 (F) and 51314 (F) are priced as 200Ah and 300Ah; their spec sheet shows 206Ah and 314Ah.</li></ul></div>';
   root.querySelector('.cc-chs').addEventListener('click',function(e){var b=e.target.closest('.cc-chip');if(!b)return;st.c=b.dataset.c;draw();});
   root.querySelector('.cc-s').addEventListener('input',function(e){st.q=e.target.value.trim();draw();});
   root.querySelector('.cc-grid').addEventListener('toggle',function(e){var d=e.target;if(d&&d.dataset&&d.dataset.id)st.open[d.dataset.id]=d.open;},true);
